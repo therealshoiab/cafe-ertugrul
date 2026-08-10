@@ -225,7 +225,7 @@ export default function ContactPage() {
             </div>
 
             <div style={{ borderRadius: 'var(--radius-sm)', overflow: 'hidden', height: '220px', position: 'relative' }}>
-              <img src="/images/biryani.png" alt="Instagram post preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="./images/biryani.png" alt="Instagram post preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               <div style={{
                 position: 'absolute',
                 bottom: 0,
@@ -272,7 +272,7 @@ export default function ContactPage() {
             </div>
 
             <div style={{ borderRadius: 'var(--radius-sm)', overflow: 'hidden', height: '220px', position: 'relative' }}>
-              <img src="/images/kebabs.png" alt="Facebook post preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="./images/kebabs.png" alt="Facebook post preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               <div style={{
                 position: 'absolute',
                 bottom: 0,

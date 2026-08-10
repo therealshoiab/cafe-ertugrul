@@ -27,7 +27,7 @@ export const MENU_ITEMS = [
     price: 380,
     isVeg: false,
     description: "Slow-cooked tender Kashmiri mutton layered with saffron basmati rice, aromatic spices, and fried onions.",
-    image: "/images/biryani.png",
+    image: "./images/biryani.png",
     popular: true,
     rating: 4.9
   },
@@ -38,7 +38,7 @@ export const MENU_ITEMS = [
     price: 320,
     isVeg: false,
     description: "Chef's signature chicken biryani infused with saffron, cardamom, and roasted cashews.",
-    image: "/images/biryani.png",
+    image: "./images/biryani.png",
     popular: true,
     rating: 4.8
   },
@@ -273,7 +273,7 @@ export const MENU_ITEMS = [
     price: 520,
     isVeg: false,
     description: "Whole chicken marinated overnight in yogurt & royal tandoori spices, charcoal roasted.",
-    image: "/images/kebabs.png",
+    image: "./images/kebabs.png",
     popular: true,
     rating: 4.9
   },
@@ -284,7 +284,7 @@ export const MENU_ITEMS = [
     price: 290,
     isVeg: false,
     description: "Half charcoal roasted chicken infused with Kashmiri red chili and lemon.",
-    image: "/images/kebabs.png",
+    image: "./images/kebabs.png",
     rating: 4.8
   },
   {
@@ -513,7 +513,7 @@ export const MENU_ITEMS = [
     price: 420,
     isVeg: false,
     description: "Boneless mutton pieces pan-fried with onions, tomatoes, green chillies & local spices.",
-    image: "/images/kebabs.png",
+    image: "./images/kebabs.png",
     popular: true,
     rating: 4.95
   },
@@ -524,7 +524,7 @@ export const MENU_ITEMS = [
     price: 340,
     isVeg: false,
     description: "Sizzling boneless chicken stir-fried with bell peppers, chili oil, and fresh herbs.",
-    image: "/images/kebabs.png",
+    image: "./images/kebabs.png",
     rating: 4.85
   },
   {
@@ -534,7 +534,7 @@ export const MENU_ITEMS = [
     price: 390,
     isVeg: false,
     description: "Minced mutton skewers seasoned with royal spices and cooked over white hot coals.",
-    image: "/images/kebabs.png",
+    image: "./images/kebabs.png",
     rating: 4.9
   },
   {
@@ -585,7 +585,7 @@ export const MENU_ITEMS = [
     price: 220,
     isVeg: true,
     description: "Pure saffron infused cold milk blended with soaked almonds, pistachio & ice cream.",
-    image: "/images/drinks.png",
+    image: "./images/drinks.png",
     popular: true,
     rating: 4.95
   },
@@ -596,7 +596,7 @@ export const MENU_ITEMS = [
     price: 180,
     isVeg: true,
     description: "Refreshing blue curaçao, lemon juice, mint leaves, and sparkling sprite.",
-    image: "/images/drinks.png",
+    image: "./images/drinks.png",
     rating: 4.8
   },
   {
@@ -848,7 +848,7 @@ export const MENU_ITEMS = [
     price: 665,
     isVeg: false,
     description: "Includes: 1 Special Kashmiri Mutton Biryani + 1 Half Tandoori Chicken + 2 Butter Naan + 2 Coke.",
-    image: "/images/biryani.png",
+    image: "./images/biryani.png",
     popular: true,
     rating: 4.98
   },
@@ -860,7 +860,7 @@ export const MENU_ITEMS = [
     price: 615,
     isVeg: false,
     description: "Includes: 1 Authentic Kashmiri Mutton Kanti + 1 Ertugrul Chicken Biryani + 2 Butter Garlic Naan.",
-    image: "/images/kebabs.png",
+    image: "./images/kebabs.png",
     popular: true,
     rating: 4.95
   },

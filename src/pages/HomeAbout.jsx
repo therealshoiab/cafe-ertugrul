@@ -87,7 +87,7 @@ export default function HomeAbout({ setActivePage }) {
 
           <div style={{ position: 'relative' }}>
             <div style={{ position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '2px solid var(--border-gold)', boxShadow: 'var(--shadow-main)' }}>
-              <img src="/images/hero.png" alt="Cafe Ertugrul Dining Experience" style={{ width: '100%', height: '450px', objectFit: 'cover', display: 'block' }} />
+              <img src="./images/hero.png" alt="Cafe Ertugrul Dining Experience" style={{ width: '100%', height: '450px', objectFit: 'cover', display: 'block' }} />
             </div>
             <div style={{
               position: 'absolute',
@@ -124,7 +124,7 @@ export default function HomeAbout({ setActivePage }) {
 
           <div className="features-grid">
             <div className="glass-card menu-card" style={{ padding: '1.25rem' }}>
-              <img src="/images/biryani.png" alt="Special Kashmiri Biryani" className="menu-card-image" />
+              <img src="./images/biryani.png" alt="Special Kashmiri Biryani" className="menu-card-image" />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="diet-tag non-veg" />
                 <span style={{ color: 'var(--primary-gold)', fontWeight: 700 }}>₹380</span>
@@ -137,7 +137,7 @@ export default function HomeAbout({ setActivePage }) {
             </div>
 
             <div className="glass-card menu-card" style={{ padding: '1.25rem' }}>
-              <img src="/images/kebabs.png" alt="Authentic Mutton Kanti" className="menu-card-image" />
+              <img src="./images/kebabs.png" alt="Authentic Mutton Kanti" className="menu-card-image" />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="diet-tag non-veg" />
                 <span style={{ color: 'var(--primary-gold)', fontWeight: 700 }}>₹420</span>
@@ -150,7 +150,7 @@ export default function HomeAbout({ setActivePage }) {
             </div>
 
             <div className="glass-card menu-card" style={{ padding: '1.25rem' }}>
-              <img src="/images/drinks.png" alt="Kashmiri Saffron Almond Shake" className="menu-card-image" />
+              <img src="./images/drinks.png" alt="Kashmiri Saffron Almond Shake" className="menu-card-image" />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="diet-tag veg" />
                 <span style={{ color: 'var(--primary-gold)', fontWeight: 700 }}>₹220</span>
