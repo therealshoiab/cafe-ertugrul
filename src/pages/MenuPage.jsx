@@ -200,16 +200,7 @@ export default function MenuPage() {
           display: 'flex',
           justifyContent: 'flex-end'
         }}>
-          <div style={{
-            width: '100%',
-            maxWidth: '460px',
-            background: '#120c0a',
-            borderLeft: '1px solid var(--border-gold)',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '1.5rem'
-          }}>
+          <div className="order-drawer-content">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border-gold)' }}>
               <h3 className="font-heading gold-text" style={{ fontSize: '1.4rem' }}>YOUR TAKEAWAY ORDER</h3>
               <button onClick={() => setShowOrderDrawer(false)} style={{ color: 'var(--text-muted)' }}>

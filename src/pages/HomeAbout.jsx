@@ -89,20 +89,7 @@ export default function HomeAbout({ setActivePage }) {
             <div style={{ position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '2px solid var(--border-gold)', boxShadow: 'var(--shadow-main)' }}>
               <img src="./images/hero.png" alt="Cafe Ertugrul Dining Experience" style={{ width: '100%', height: '450px', objectFit: 'cover', display: 'block' }} />
             </div>
-            <div style={{
-              position: 'absolute',
-              bottom: '-25px',
-              left: '-25px',
-              background: 'var(--bg-card)',
-              border: '1px solid var(--primary-gold)',
-              borderRadius: 'var(--radius-md)',
-              padding: '1.25rem',
-              backdropFilter: 'blur(12px)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '15px',
-              maxWidth: '280px'
-            }}>
+            <div className="hero-float-badge">
               <div className="logo-badge" style={{ width: '42px', height: '42px', fontSize: '1.1rem' }}>★</div>
               <div>
                 <div style={{ color: '#fff', fontWeight: 700, fontSize: '0.95rem' }}>Authentic Flavors</div>
