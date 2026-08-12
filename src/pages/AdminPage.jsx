@@ -244,62 +244,61 @@ export default function AdminPage({ onMenuUpdate }) {
   return (
     <div className="admin-page section-padding container">
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px', marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-gold)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '1.75rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-gold)' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <h2 className="font-heading gold-text" style={{ fontSize: '2rem' }}>CAFE ERTUGRUL ADMIN</h2>
-            <span className="device-tag">Master Control</span>
+            <h2 className="font-heading gold-text" style={{ fontSize: 'clamp(1.4rem, 4vw, 2rem)' }}>CAFE ERTUGRUL ADMIN</h2>
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Add new dishes, update prices, toggle stock availability, and upload food photos live.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginTop: '4px' }}>Add new dishes, update prices, toggle stock availability, and upload food photos live.</p>
         </div>
 
-        <button onClick={handleLogout} className="btn-secondary" style={{ padding: '8px 18px', fontSize: '0.85rem' }}>
+        <button onClick={handleLogout} className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
           <LogOut size={16} /> Exit Admin
         </button>
       </div>
 
       {/* Stats Summary Bar */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
-        <div className="glass-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
-          <div className="font-heading gold-text" style={{ fontSize: '2rem', fontWeight: 800 }}>{items.length}</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Total Menu Dishes</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+        <div className="glass-card" style={{ padding: '1rem', textAlign: 'center' }}>
+          <div className="font-heading gold-text" style={{ fontSize: '1.8rem', fontWeight: 800 }}>{items.length}</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Total Dishes</div>
         </div>
-        <div className="glass-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
-          <div className="font-heading gold-text" style={{ fontSize: '2rem', fontWeight: 800 }}>{items.filter(i => i.isAvailable !== false).length}</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Active Dishes</div>
+        <div className="glass-card" style={{ padding: '1rem', textAlign: 'center' }}>
+          <div className="font-heading gold-text" style={{ fontSize: '1.8rem', fontWeight: 800 }}>{items.filter(i => i.isAvailable !== false).length}</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Active Dishes</div>
         </div>
-        <div className="glass-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
-          <div className="font-heading" style={{ fontSize: '2rem', fontWeight: 800, color: '#e63946' }}>{items.filter(i => i.isAvailable === false).length}</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Out of Stock</div>
+        <div className="glass-card" style={{ padding: '1rem', textAlign: 'center' }}>
+          <div className="font-heading" style={{ fontSize: '1.8rem', fontWeight: 800, color: '#e63946' }}>{items.filter(i => i.isAvailable === false).length}</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Out of Stock</div>
         </div>
-        <div className="glass-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
-          <div className="font-heading gold-text" style={{ fontSize: '2rem', fontWeight: 800 }}>16</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Active Categories</div>
+        <div className="glass-card" style={{ padding: '1rem', textAlign: 'center' }}>
+          <div className="font-heading gold-text" style={{ fontSize: '1.8rem', fontWeight: 800 }}>16</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Active Categories</div>
         </div>
       </div>
 
-      {/* Navigation Tabs */}
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '2rem', flexWrap: 'wrap' }}>
+      {/* Navigation Tabs (Scrollable on Mobile) */}
+      <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '2rem', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
         <button
           onClick={() => setActiveTab('add')}
           className={`category-pill ${activeTab === 'add' ? 'active' : ''}`}
-          style={{ padding: '10px 22px', fontSize: '0.95rem' }}
+          style={{ padding: '9px 18px', fontSize: '0.88rem', flexShrink: 0 }}
         >
-          <Plus size={18} /> Add New Dish
+          <Plus size={16} /> Add New Dish
         </button>
         <button
           onClick={() => setActiveTab('manage')}
           className={`category-pill ${activeTab === 'manage' ? 'active' : ''}`}
-          style={{ padding: '10px 22px', fontSize: '0.95rem' }}
+          style={{ padding: '9px 18px', fontSize: '0.88rem', flexShrink: 0 }}
         >
-          <Utensils size={18} /> Manage Menu & Prices ({items.length})
+          <Utensils size={16} /> Manage Menu & Prices ({items.length})
         </button>
         <button
           onClick={() => setActiveTab('settings')}
           className={`category-pill ${activeTab === 'settings' ? 'active' : ''}`}
-          style={{ padding: '10px 22px', fontSize: '0.95rem' }}
+          style={{ padding: '9px 18px', fontSize: '0.88rem', flexShrink: 0 }}
         >
-          <Key size={18} /> Settings & Passcode
+          <Key size={16} /> Settings & Passcode
         </button>
       </div>
 
