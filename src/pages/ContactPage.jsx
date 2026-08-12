@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { RESTAURANT_INFO } from '../data/menuData';
-import { MapPin, Phone, Clock, Send, CheckCircle2, Navigation, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Clock, Navigation, Calendar, Users, Send, CheckCircle2, MessageSquare } from 'lucide-react';
 import { InstagramIcon, FacebookIcon } from '../components/Icons';
 
 export default function ContactPage() {
-  const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     guests: '2',
-    date: '',
-    time: '19:00',
+    date: new Date().toISOString().split('T')[0],
+    time: '13:00',
     notes: ''
   });
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,9 +37,9 @@ export default function ContactPage() {
     <div className="contact-page section-padding container">
       {/* Header */}
       <div className="section-header">
-        <span className="section-tag">Reach Out & Visit Us</span>
-        <h2 className="section-title">CONTACT <span className="gold-text">CAFE ERTUGRUL</span></h2>
-        <p className="section-desc">Located at Solina Bazar, Airport Road, Srinagar. Call us directly or book a table below.</p>
+        <span className="section-tag">Solina Bazar, Srinagar</span>
+        <h2 className="section-title">CONTACT & <span className="gold-text">RESERVATIONS</span></h2>
+        <p className="section-desc">Reserve a table for your family, book private seating, or visit us directly on Airport Road.</p>
       </div>
 
       <div className="contact-grid">
@@ -85,11 +85,12 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Map Embed */}
+          {/* Map Container */}
           <div className="map-container">
             <iframe
-              title="Cafe Ertugrul Location Map"
+              title="Cafe Ertugrul Google Maps Location"
               src={RESTAURANT_INFO.mapsEmbedSrc}
+              allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
@@ -99,47 +100,43 @@ export default function ContactPage() {
         {/* Right Column: Table Reservation Form */}
         <div>
           <div className="glass-card">
-            <h3 className="font-heading gold-text" style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Table Reservation & Inquiry</h3>
+            <h3 className="font-heading gold-text" style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Reserve A Table</h3>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-              Reserve a table for your family dinner or private celebration in advance.
+              Select any time during working hours (11:30 AM to 10:30 PM). Your request will automatically open on WhatsApp for instant confirmation.
             </p>
 
             {formSubmitted ? (
               <div style={{ textAlign: 'center', padding: '2.5rem 1rem' }}>
-                <CheckCircle2 size={54} style={{ color: 'var(--primary-gold)', marginBottom: '1rem' }} />
-                <h4 style={{ color: '#fff', fontSize: '1.3rem', marginBottom: '0.5rem' }}>Reservation Request Sent!</h4>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-                  Thank you, <strong>{formData.name}</strong>! We look forward to welcoming you to Cafe Ertugrul. Our team will contact you shortly at <strong>{formData.phone}</strong> to confirm your table.
+                <CheckCircle2 size={54} style={{ color: '#25D366', marginBottom: '1rem' }} />
+                <h4 className="font-heading gold-text" style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>RESERVATION SENT!</h4>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', marginBottom: '1.5rem' }}>
+                  Your reservation request was generated for <strong>{formData.name}</strong> on {formData.date} at {formData.time}.
                 </p>
-                <button 
-                  onClick={() => setFormSubmitted(false)} 
-                  className="btn-secondary" 
-                  style={{ marginTop: '1.5rem' }}
-                >
-                  Make Another Booking
+                <button onClick={() => setFormSubmitted(false)} className="btn-secondary">
+                  Book Another Table
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label className="form-label">Full Name</label>
+                  <label className="form-label">Your Full Name *</label>
                   <input
                     type="text"
                     required
                     className="form-control"
-                    placeholder="Enter your name"
+                    placeholder="e.g. Shoiab Mushtaq"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Mobile Number</label>
+                  <label className="form-label">Mobile Phone Number *</label>
                   <input
                     type="tel"
                     required
                     className="form-control"
-                    placeholder="07006609580 or your phone number"
+                    placeholder="e.g. 7006609580"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   />
@@ -157,12 +154,12 @@ export default function ContactPage() {
                       <option value="2">2 Guests</option>
                       <option value="4">4 Guests</option>
                       <option value="6">6 Guests</option>
-                      <option value="8+">8+ Guests (Family)</option>
+                      <option value="8+">8+ Family Guests</option>
                     </select>
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Date</label>
+                    <label className="form-label">Date *</label>
                     <input
                       type="date"
                       required
@@ -173,18 +170,16 @@ export default function ContactPage() {
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Time</label>
-                    <select
+                    <label className="form-label">Time (Anytime 11:30AM-10:30PM) *</label>
+                    <input
+                      type="time"
+                      required
+                      min="11:30"
+                      max="22:30"
                       className="form-control"
                       value={formData.time}
                       onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    >
-                      <option value="12:00">12:00 PM</option>
-                      <option value="14:00">02:00 PM</option>
-                      <option value="17:00">05:00 PM</option>
-                      <option value="19:00">07:00 PM</option>
-                      <option value="20:30">08:30 PM</option>
-                    </select>
+                    />
                   </div>
                 </div>
 
@@ -193,14 +188,14 @@ export default function ContactPage() {
                   <textarea
                     rows={3}
                     className="form-control"
-                    placeholder="e.g. High chair needed, anniversary dinner, preference for quiet booth..."
+                    placeholder="e.g. Anniversary dinner, high chair required, quiet booth preference..."
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   />
                 </div>
 
-                <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
-                  <Send size={18} /> Submit Table Booking
+                <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', background: '#25D366', color: '#fff' }}>
+                  <MessageSquare size={18} /> Send Table Booking via WhatsApp
                 </button>
               </form>
             )}
@@ -221,7 +216,7 @@ export default function ContactPage() {
           <div className="social-embed-card">
             <div className="social-header">
               <div className="social-avatar" style={{ background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)', color: '#fff' }}>
-                <InstagramIcon size={24} />
+                <InstagramIcon size={22} />
               </div>
               <div className="social-meta">
                 <div className="social-username">Cafe Ertugrul</div>
@@ -231,10 +226,10 @@ export default function ContactPage() {
                 href={RESTAURANT_INFO.instagram} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="btn-secondary" 
-                style={{ padding: '6px 14px', fontSize: '0.8rem' }}
+                className="btn-primary" 
+                style={{ padding: '6px 16px', fontSize: '0.82rem', background: 'linear-gradient(45deg, #f09433 0%, #dc2743 50%, #bc1888 100%)', color: '#fff' }}
               >
-                Follow
+                Follow Instagram
               </a>
             </div>
 
@@ -258,9 +253,9 @@ export default function ContactPage() {
               href={RESTAURANT_INFO.instagram} 
               target="_blank" 
               rel="noopener noreferrer" 
-              style={{ color: 'var(--primary-gold)', fontWeight: 600, textAlign: 'center', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+              style={{ color: '#e6683c', fontWeight: 700, textAlign: 'center', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
             >
-              View Official Instagram Profile <InstagramIcon size={16} />
+              Open Instagram Profile <InstagramIcon size={16} />
             </a>
           </div>
 
@@ -268,7 +263,7 @@ export default function ContactPage() {
           <div className="social-embed-card">
             <div className="social-header">
               <div className="social-avatar" style={{ background: '#1877f2', color: '#fff' }}>
-                <FacebookIcon size={24} />
+                <FacebookIcon size={22} />
               </div>
               <div className="social-meta">
                 <div className="social-username">Cafe Ertugrul Official Page</div>
@@ -278,10 +273,10 @@ export default function ContactPage() {
                 href={RESTAURANT_INFO.facebook} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="btn-secondary" 
-                style={{ padding: '6px 14px', fontSize: '0.8rem' }}
+                className="btn-primary" 
+                style={{ padding: '6px 16px', fontSize: '0.82rem', background: '#1877f2', color: '#fff' }}
               >
-                Like Page
+                Follow Facebook
               </a>
             </div>
 
@@ -297,7 +292,7 @@ export default function ContactPage() {
                 color: '#fff',
                 fontSize: '0.85rem'
               }}>
-                "Fresh sizzlers, Kanti & Tandoori chicken live from our charcoal grill at Solina Bazar, Srinagar!"
+                "Sizzling Mutton Kanti & Charcoal Grilled Tandoori Delicacies now available at Cafe Ertugrul, Solina Bazar!"
               </div>
             </div>
 
@@ -305,9 +300,9 @@ export default function ContactPage() {
               href={RESTAURANT_INFO.facebook} 
               target="_blank" 
               rel="noopener noreferrer" 
-              style={{ color: 'var(--primary-gold)', fontWeight: 600, textAlign: 'center', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+              style={{ color: '#1877f2', fontWeight: 700, textAlign: 'center', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
             >
-              View Official Facebook Page <FacebookIcon size={16} />
+              Open Facebook Page <FacebookIcon size={16} />
             </a>
           </div>
         </div>

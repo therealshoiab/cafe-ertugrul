@@ -2,7 +2,7 @@ import { MENU_CATEGORIES, MENU_ITEMS } from '../data/menuData';
 
 const STORAGE_KEY = 'cafe_ertugrul_menu_v1';
 const PASSCODE_KEY = 'cafe_ertugrul_admin_passcode';
-const DEFAULT_PASSCODE = 'ertugrul2026';
+const DEFAULT_PASSCODE = 'Ertugrul@2026';
 
 // Helper to initialize local storage for development
 const initStorage = () => {

@@ -913,8 +913,8 @@ export const RESTAURANT_INFO = {
   phone: "7006609580",
   formattedPhone: "+91 70066 09580",
   googleMapsUrl: "https://www.google.com/maps/dir/34.0566784,74.8034679/Caf%C3%A9+Ertu%C4%9Frul,+Solina+bazar,+Airport+Rd,+Srinagar,+Jammu+and+Kashmir+190008/@34.056706,74.8008476,17z/data=!3m1!4b1!4m10!4m9!1m1!4e1!1m5!1m1!1s0x38e18fe7109e003f:0x71219bfac96fc42b!2m2!1d74.8033622!2d34.0566941!3e0?entry=ttu&g_ep=EgoyMDI2MDgwNS4xIKXMDSoASAFQAw%3D%3D",
-  instagram: "https://www.instagram.com/cafe.ertugrul",
-  facebook: "https://www.facebook.com/cafe.ertugrul",
+  instagram: "https://www.instagram.com/cafe.ertugrul/",
+  facebook: "https://www.facebook.com/cafe.ertugrul/?ref=PROFILE_EDIT_xav_ig_profile_page_web#",
   hours: "Monday - Sunday: 11:30 AM - 10:30 PM",
   mapsEmbedSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.658764047605!2d74.8008476!3d34.056706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38e18fe7109e003f%3A0x71219bfac96fc42b!2sCaf%C3%A9%20Ertu%C4%9Frul!5e0!3m2!1sen!2sin!4v1723200000000!5m2!1sen!2sin"
 };

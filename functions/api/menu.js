@@ -30,7 +30,7 @@ export async function onRequestPost(context) {
 
   // Security Check: Verify Admin Secret Key
   const adminSecretHeader = request.headers.get("x-admin-secret");
-  const expectedSecret = env.ADMIN_SECRET_KEY || "ertugrul2026";
+  const expectedSecret = env.ADMIN_SECRET_KEY || "Ertugrul@2026";
 
   if (adminSecretHeader !== expectedSecret) {
     return new Response(JSON.stringify({ error: "Unauthorized: Invalid Admin Secret Key" }), {

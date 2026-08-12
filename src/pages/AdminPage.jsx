@@ -59,7 +59,7 @@ export default function AdminPage({ onMenuUpdate }) {
       setLoginError('');
       refreshData();
     } else {
-      setLoginError('Incorrect Passcode! Hint: Default passcode is ertugrul2026');
+      setLoginError('Incorrect Admin Passcode! Please try again.');
     }
   };
 
@@ -177,8 +177,8 @@ export default function AdminPage({ onMenuUpdate }) {
       <div className="section-padding container" style={{ minHeight: '75vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className="glass-card" style={{ maxWidth: '440px', width: '100%', padding: '2.5rem 2rem', border: '2px solid var(--primary-gold)' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <div className="logo-badge" style={{ margin: '0 auto 1rem', width: '56px', height: '56px', fontSize: '1.8rem' }}>
-              <Shield size={28} />
+            <div className="logo-badge-container" style={{ margin: '0 auto 1rem', width: '56px', height: '56px' }}>
+              <img src="./images/logo.png" alt="Cafe Ertugrul Logo" className="brand-logo-img" />
             </div>
             <h2 className="font-heading gold-text" style={{ fontSize: '1.8rem' }}>OWNER ADMIN LOGIN</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '6px' }}>
@@ -214,7 +214,7 @@ export default function AdminPage({ onMenuUpdate }) {
                   type={showPasscode ? 'text' : 'password'}
                   required
                   className="form-control"
-                  placeholder="Enter passcode (ertugrul2026)"
+                  placeholder="Enter Admin Passcode"
                   value={passcode}
                   onChange={(e) => setPasscode(e.target.value)}
                   style={{ paddingRight: '45px' }}

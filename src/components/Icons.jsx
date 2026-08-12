@@ -1,12 +1,12 @@
 import React from 'react';
 
-export const InstagramIcon = ({ size = 24, className = '', style = {} }) => (
+export const InstagramIcon = ({ size = 20, className = '', style = {} }) => (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
+    stroke="#ffffff"
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -19,13 +19,13 @@ export const InstagramIcon = ({ size = 24, className = '', style = {} }) => (
   </svg>
 );
 
-export const FacebookIcon = ({ size = 24, className = '', style = {} }) => (
+export const FacebookIcon = ({ size = 20, className = '', style = {} }) => (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
+    stroke="#ffffff"
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
