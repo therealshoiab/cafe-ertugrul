@@ -72,6 +72,15 @@ export default function Navbar({ activePage, setActivePage }) {
               Contact & Location
             </button>
           </li>
+          <li>
+            <button 
+              onClick={() => handleNavClick('admin')} 
+              className={`nav-link ${activePage === 'admin' ? 'active' : ''}`}
+              style={{ color: 'var(--primary-gold)' }}
+            >
+              Owner Admin 🔐
+            </button>
+          </li>
         </ul>
 
         {/* Action Button */}
@@ -105,7 +114,7 @@ export default function Navbar({ activePage, setActivePage }) {
             className={`nav-link ${activePage === 'menu' ? 'active' : ''}`}
             style={{ textAlign: 'left', fontSize: '1.15rem' }}
           >
-            Explore Menu (91 Items)
+            Explore Menu
           </button>
           <button 
             onClick={() => handleNavClick('contact')} 
@@ -113,6 +122,13 @@ export default function Navbar({ activePage, setActivePage }) {
             style={{ textAlign: 'left', fontSize: '1.15rem' }}
           >
             Contact & Map Location
+          </button>
+          <button 
+            onClick={() => handleNavClick('admin')} 
+            className={`nav-link ${activePage === 'admin' ? 'active' : ''}`}
+            style={{ textAlign: 'left', fontSize: '1.15rem', color: 'var(--primary-gold)' }}
+          >
+            Owner Admin Portal 🔐
           </button>
         </div>
       )}

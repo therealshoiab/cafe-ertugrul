@@ -53,6 +53,7 @@ export default function Footer({ setActivePage }) {
               <li><button onClick={() => handleNav('home')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Home & Story</button></li>
               <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Explore Menu</button></li>
               <li><button onClick={() => handleNav('contact')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Location & Map</button></li>
+              <li><button onClick={() => handleNav('admin')} style={{ color: 'var(--primary-gold)', background: 'none', border: 'none' }}>Owner Admin Portal 🔐</button></li>
               <li><a href={RESTAURANT_INFO.googleMapsUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary-gold)' }}>Get Directions <ArrowUpRight size={14} /></a></li>
             </ul>
           </div>
