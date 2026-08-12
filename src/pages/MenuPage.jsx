@@ -218,21 +218,16 @@ export default function MenuPage() {
                 </div>
               )}
 
-              {item.category === 'combos' && item.originalPrice && !isAdded && (
-                <div className="discount-tag">SAVE 30% OFF</div>
-              )}
-
               {item.image && (
                 <img src={item.image} alt={item.name} className="menu-card-image" />
               )}
 
               <div className="menu-item-header">
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', flexGrow: 1 }}>
-                  <span className={`diet-tag ${item.isVeg ? 'veg' : 'non-veg'}`} title={item.isVeg ? 'Vegetarian' : 'Non-Vegetarian'} style={{ marginTop: '3px' }} />
+                  <span className={`diet-tag ${item.isVeg ? 'veg' : 'non-veg'}`} title={item.isVeg ? 'Vegetarian' : 'Non-Vegetarian'} style={{ marginTop: '3px', flexShrink: 0 }} />
                   <h3 className="menu-item-title">{item.name}</h3>
                 </div>
                 <div className="menu-item-price">
-                  {item.originalPrice && <span className="original-price">₹{item.originalPrice}</span>}
                   ₹{item.price}
                 </div>
               </div>
