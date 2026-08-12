@@ -1,27 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { RESTAURANT_INFO } from '../data/menuData';
-import { Phone, Menu, X, Utensils, MapPin, Smartphone, Tablet, Monitor, MessageSquare } from 'lucide-react';
+import { Phone, Menu, X, MessageSquare } from 'lucide-react';
 
 export default function Navbar({ activePage, setActivePage }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [deviceType, setDeviceType] = useState('desktop');
-
-  useEffect(() => {
-    const handleResize = () => {
-      const w = window.innerWidth;
-      if (w <= 576) {
-        setDeviceType('mobile');
-      } else if (w <= 1024) {
-        setDeviceType('tablet');
-      } else {
-        setDeviceType('desktop');
-      }
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const handleNavClick = (pageId) => {
     setActivePage(pageId);
@@ -33,15 +15,12 @@ export default function Navbar({ activePage, setActivePage }) {
     <nav className="navbar">
       <div className="container navbar-inner">
         <button onClick={() => handleNavClick('home')} className="brand-logo">
-          <div className="logo-badge">CE</div>
+          <div className="logo-badge-container">
+            <img src="./images/logo.png" alt="Cafe Ertugrul Brand Logo" className="brand-logo-img" />
+          </div>
           <div>
             <div className="brand-name">
               CAFE <span>ERTUGRUL</span>
-            </div>
-            <div className="device-tag">
-              {deviceType === 'mobile' && <><Smartphone size={12} /> Mobile View</>}
-              {deviceType === 'tablet' && <><Tablet size={12} /> Tablet View</>}
-              {deviceType === 'desktop' && <><Monitor size={12} /> Desktop View</>}
             </div>
           </div>
         </button>
@@ -76,7 +55,6 @@ export default function Navbar({ activePage, setActivePage }) {
             <button 
               onClick={() => handleNavClick('admin')} 
               className={`nav-link ${activePage === 'admin' ? 'active' : ''}`}
-              style={{ color: 'var(--primary-gold)' }}
             >
               Owner Admin 🔐
             </button>
@@ -93,41 +71,41 @@ export default function Navbar({ activePage, setActivePage }) {
             className="mobile-toggle" 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle navigation menu"
-            style={{ padding: '10px 12px', border: '1px solid var(--primary-gold)', color: 'var(--primary-gold)' }}
+            style={{ padding: '10px 12px', border: '1px solid var(--border-gold)', color: 'var(--primary-gold)' }}
           >
             {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer (3-Line Menu Pages) */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="mobile-drawer">
           <button 
             onClick={() => handleNavClick('home')} 
             className={`nav-link ${activePage === 'home' ? 'active' : ''}`}
-            style={{ textAlign: 'left', fontSize: '1.15rem', padding: '10px 0' }}
+            style={{ textAlign: 'left', fontSize: '1.1rem', padding: '10px 0' }}
           >
             🏠 Home & Story
           </button>
           <button 
             onClick={() => handleNavClick('menu')} 
             className={`nav-link ${activePage === 'menu' ? 'active' : ''}`}
-            style={{ textAlign: 'left', fontSize: '1.15rem', padding: '10px 0' }}
+            style={{ textAlign: 'left', fontSize: '1.1rem', padding: '10px 0' }}
           >
             📜 Explore Full Menu (91 Items)
           </button>
           <button 
             onClick={() => handleNavClick('contact')} 
             className={`nav-link ${activePage === 'contact' ? 'active' : ''}`}
-            style={{ textAlign: 'left', fontSize: '1.15rem', padding: '10px 0' }}
+            style={{ textAlign: 'left', fontSize: '1.1rem', padding: '10px 0' }}
           >
             📍 Contact & Map Location
           </button>
           <button 
             onClick={() => handleNavClick('admin')} 
             className={`nav-link ${activePage === 'admin' ? 'active' : ''}`}
-            style={{ textAlign: 'left', fontSize: '1.15rem', padding: '10px 0', color: 'var(--primary-gold)' }}
+            style={{ textAlign: 'left', fontSize: '1.1rem', padding: '10px 0' }}
           >
             🔐 Owner Admin Portal
           </button>

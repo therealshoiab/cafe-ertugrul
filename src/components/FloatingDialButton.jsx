@@ -7,11 +7,10 @@ export default function FloatingDialButton() {
     <a
       href={`tel:${RESTAURANT_INFO.phone}`}
       className="floating-dial-btn"
-      aria-label={`Call Cafe Ertugrul at ${RESTAURANT_INFO.phone}`}
-      title={`Call Cafe Ertugrul (${RESTAURANT_INFO.phone})`}
+      aria-label="Direct Phone Call Cafe Ertugrul"
     >
-      <div className="pulse-ring"></div>
-      <Phone size={24} />
+      <span className="pulse-ring green-pulse" />
+      <Phone size={20} fill="#ffffff" style={{ color: '#ffffff' }} />
       <span className="dial-text">Call {RESTAURANT_INFO.phone}</span>
     </a>
   );

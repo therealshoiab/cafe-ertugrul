@@ -126,54 +126,43 @@ export default function MenuPage() {
         )}
       </div>
 
-      {/* Filter Pills */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '1.25rem' }}>
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Filter size={14} /> Filter:
-          </span>
-          <button
-            onClick={() => setDietFilter('all')}
-            className={`category-pill ${dietFilter === 'all' ? 'active' : ''}`}
-            style={{ padding: '6px 14px', fontSize: '0.82rem' }}
-          >
-            All Foods
-          </button>
-          <button
-            onClick={() => setDietFilter('veg')}
-            className={`category-pill ${dietFilter === 'veg' ? 'active' : ''}`}
-            style={{ padding: '6px 14px', fontSize: '0.82rem' }}
-          >
-            <span className="diet-tag veg" style={{ width: '10px', height: '10px' }} /> Veg
-          </button>
-          <button
-            onClick={() => setDietFilter('non-veg')}
-            className={`category-pill ${dietFilter === 'non-veg' ? 'active' : ''}`}
-            style={{ padding: '6px 14px', fontSize: '0.82rem' }}
-          >
-            <span className="diet-tag non-veg" style={{ width: '10px', height: '10px' }} /> Non-Veg
-          </button>
-
-          {/* Quick Filter: In My Order */}
-          {totalItemCount > 0 && (
-            <button
-              onClick={() => setDietFilter('cart-only')}
-              className={`category-pill ${dietFilter === 'cart-only' ? 'active' : ''}`}
-              style={{ padding: '6px 14px', fontSize: '0.82rem', background: 'var(--gold-gradient)', color: '#0f0a07', fontWeight: 700 }}
-            >
-              <ShoppingCart size={14} /> In My Order ({totalItemCount})
-            </button>
-          )}
-        </div>
-
-        {/* Floating Cart Drawer Button */}
+      {/* Filter Pills Bar */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
+        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <Filter size={14} /> Filter:
+        </span>
         <button
-          onClick={() => setShowOrderDrawer(true)}
-          className="btn-primary"
-          style={{ padding: '9px 18px', fontSize: '0.85rem' }}
+          onClick={() => setDietFilter('all')}
+          className={`category-pill ${dietFilter === 'all' ? 'active' : ''}`}
+          style={{ padding: '6px 14px', fontSize: '0.82rem' }}
         >
-          <ShoppingBag size={16} /> View Order ({totalItemCount}) - ₹{totalPrice}
+          All Foods
         </button>
+        <button
+          onClick={() => setDietFilter('veg')}
+          className={`category-pill ${dietFilter === 'veg' ? 'active' : ''}`}
+          style={{ padding: '6px 14px', fontSize: '0.82rem' }}
+        >
+          <span className="diet-tag veg" style={{ width: '10px', height: '10px' }} /> Veg
+        </button>
+        <button
+          onClick={() => setDietFilter('non-veg')}
+          className={`category-pill ${dietFilter === 'non-veg' ? 'active' : ''}`}
+          style={{ padding: '6px 14px', fontSize: '0.82rem' }}
+        >
+          <span className="diet-tag non-veg" style={{ width: '10px', height: '10px' }} /> Non-Veg
+        </button>
+
+        {/* Quick Filter: In My Order */}
+        {totalItemCount > 0 && (
+          <button
+            onClick={() => setDietFilter('cart-only')}
+            className={`category-pill ${dietFilter === 'cart-only' ? 'active' : ''}`}
+            style={{ padding: '6px 14px', fontSize: '0.82rem', background: 'var(--gold-gradient)', color: '#0f0a07', fontWeight: 700 }}
+          >
+            <ShoppingCart size={14} /> In My Order ({totalItemCount})
+          </button>
+        )}
       </div>
 
       {/* Category Pills Bar (16 Categories) */}
@@ -297,7 +286,7 @@ export default function MenuPage() {
         })}
       </div>
 
-      {/* STICKY BOTTOM MOBILE CART BAR */}
+      {/* STICKY FLOATING CART BUTTON WHEN ITEMS ADDED */}
       {totalItemCount > 0 && (
         <div className="sticky-mobile-cart-bar">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -307,7 +296,7 @@ export default function MenuPage() {
             </div>
             <div>
               <div style={{ color: '#fff', fontWeight: 800, fontSize: '1.05rem' }}>₹{totalPrice}</div>
-              <div style={{ color: 'var(--primary-gold)', fontSize: '0.75rem' }}>{totalItemCount} Dish{totalItemCount > 1 ? 'es' : ''} Added</div>
+              <div style={{ color: 'var(--primary-gold)', fontSize: '0.75rem' }}>{totalItemCount} Dish{totalItemCount > 1 ? 'es' : ''} Selected</div>
             </div>
           </div>
 
@@ -317,7 +306,7 @@ export default function MenuPage() {
         </div>
       )}
 
-      {/* Order Drawer Modal */}
+      {/* Takeaway Order Modal Drawer */}
       {showOrderDrawer && (
         <div style={{
           position: 'fixed',
@@ -326,14 +315,17 @@ export default function MenuPage() {
           right: 0,
           bottom: 0,
           background: 'rgba(0, 0, 0, 0.8)',
-          backdropFilter: 'blur(8px)',
+          backdropFilter: 'blur(10px)',
           zIndex: 2500,
           display: 'flex',
           justifyContent: 'flex-end'
         }}>
           <div className="order-drawer-content">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border-gold)' }}>
-              <h3 className="font-heading gold-text" style={{ fontSize: '1.4rem' }}>YOUR TAKEAWAY ORDER</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img src="./images/logo.png" alt="Cafe Ertugrul Logo" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
+                <h3 className="font-heading gold-text" style={{ fontSize: '1.3rem' }}>YOUR TAKEAWAY ORDER</h3>
+              </div>
               <button onClick={() => setShowOrderDrawer(false)} style={{ color: 'var(--text-muted)' }}>
                 <X size={24} />
               </button>
