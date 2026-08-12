@@ -113,57 +113,94 @@ export default function MenuPage() {
         <p className="section-desc">Explore handcrafted dishes across 16 categories — from Biryani to Tandoor, Kathi Rolls, Pizzas & Shakes.</p>
       </div>
 
-      {/* Search Bar */}
-      <div className="menu-search-bar">
-        <Search size={20} style={{ color: 'var(--primary-gold)', flexShrink: 0 }} />
-        <input
-          type="text"
-          placeholder="Search by dish name, biryani, pizza, kanti, shake..."
-          className="menu-search-input"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        {searchQuery && (
-          <button onClick={() => setSearchQuery('')} style={{ color: 'var(--text-muted)' }}>
-            <X size={18} />
-          </button>
-        )}
-      </div>
+      {/* Search & Integrated Dietary Filter Bar */}
+      <div className="menu-search-bar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', padding: '10px 16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexGrow: 1, minWidth: '220px' }}>
+          <Search size={20} style={{ color: 'var(--primary-gold)', flexShrink: 0 }} />
+          <input
+            type="text"
+            placeholder="Search by dish name, biryani, pizza, kanti, shake..."
+            className="menu-search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} style={{ color: 'var(--text-muted)' }}>
+              <X size={18} />
+            </button>
+          )}
+        </div>
 
-      {/* Filter Pills Bar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
-        <button
-          onClick={() => setDietFilter('all')}
-          className={`category-pill ${dietFilter === 'all' ? 'active' : ''}`}
-          style={{ padding: '6px 14px', fontSize: '0.82rem' }}
-        >
-          All Foods
-        </button>
-        <button
-          onClick={() => setDietFilter('veg')}
-          className={`category-pill ${dietFilter === 'veg' ? 'active' : ''}`}
-          style={{ padding: '6px 14px', fontSize: '0.82rem' }}
-        >
-          <span className="diet-tag veg" style={{ width: '10px', height: '10px' }} /> Veg
-        </button>
-        <button
-          onClick={() => setDietFilter('non-veg')}
-          className={`category-pill ${dietFilter === 'non-veg' ? 'active' : ''}`}
-          style={{ padding: '6px 14px', fontSize: '0.82rem' }}
-        >
-          <span className="diet-tag non-veg" style={{ width: '10px', height: '10px' }} /> Non-Veg
-        </button>
-
-        {/* Quick Filter: In My Order */}
-        {totalItemCount > 0 && (
+        {/* Compact Segmented Diet Control */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(0,0,0,0.5)', padding: '3px', borderRadius: '50px', border: '1px solid var(--border-gold)' }}>
           <button
-            onClick={() => setDietFilter('cart-only')}
-            className={`category-pill ${dietFilter === 'cart-only' ? 'active' : ''}`}
-            style={{ padding: '6px 14px', fontSize: '0.82rem', background: 'var(--gold-gradient)', color: '#0f0a07', fontWeight: 700 }}
+            onClick={() => setDietFilter('all')}
+            style={{
+              padding: '5px 14px',
+              borderRadius: '50px',
+              fontSize: '0.78rem',
+              fontWeight: dietFilter === 'all' ? 700 : 500,
+              background: dietFilter === 'all' ? 'var(--gold-gradient)' : 'transparent',
+              color: dietFilter === 'all' ? '#0f0a07' : 'var(--text-muted)',
+              transition: 'var(--transition-fast)'
+            }}
           >
-            <ShoppingCart size={14} /> In My Order ({totalItemCount})
+            All
           </button>
-        )}
+          <button
+            onClick={() => setDietFilter('veg')}
+            style={{
+              padding: '5px 14px',
+              borderRadius: '50px',
+              fontSize: '0.78rem',
+              fontWeight: dietFilter === 'veg' ? 700 : 500,
+              background: dietFilter === 'veg' ? '#2a9d8f' : 'transparent',
+              color: dietFilter === 'veg' ? '#ffffff' : 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              transition: 'var(--transition-fast)'
+            }}
+          >
+            <span className="diet-tag veg" style={{ width: '8px', height: '8px' }} /> Veg
+          </button>
+          <button
+            onClick={() => setDietFilter('non-veg')}
+            style={{
+              padding: '5px 14px',
+              borderRadius: '50px',
+              fontSize: '0.78rem',
+              fontWeight: dietFilter === 'non-veg' ? 700 : 500,
+              background: dietFilter === 'non-veg' ? '#e63946' : 'transparent',
+              color: dietFilter === 'non-veg' ? '#ffffff' : 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              transition: 'var(--transition-fast)'
+            }}
+          >
+            <span className="diet-tag non-veg" style={{ width: '8px', height: '8px' }} /> Non-Veg
+          </button>
+
+          {totalItemCount > 0 && (
+            <button
+              onClick={() => setDietFilter('cart-only')}
+              style={{
+                padding: '5px 14px',
+                borderRadius: '50px',
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                background: dietFilter === 'cart-only' ? '#ffd700' : 'rgba(229, 183, 87, 0.25)',
+                color: dietFilter === 'cart-only' ? '#0f0a07' : 'var(--primary-gold)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              <ShoppingCart size={12} /> In Order ({totalItemCount})
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Category Pills Bar (16 Categories) */}

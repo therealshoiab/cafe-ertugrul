@@ -1,22 +1,60 @@
 import React, { useState } from 'react';
 import { RESTAURANT_INFO } from '../data/menuData';
-import { MapPin, Phone, Clock, Navigation, Calendar, Users, Send, CheckCircle2, MessageSquare } from 'lucide-react';
-import { InstagramIcon, FacebookIcon } from '../components/Icons';
+import { MapPin, Phone, Clock, Navigation, Calendar, Users, Send, CheckCircle2, MessageSquare, AlertCircle } from 'lucide-react';
+
+const formatAMPM = (time24) => {
+  if (!time24) return '';
+  const [hStr, mStr] = time24.split(':');
+  let h = parseInt(hStr, 10);
+  const m = mStr || '00';
+  if (isNaN(h)) return time24;
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12;
+  if (h === 0) h = 12;
+  const formattedH = h < 10 ? `0${h}` : `${h}`;
+  return `${formattedH}:${m} ${ampm}`;
+};
 
 export default function ContactPage() {
+  const todayStr = new Date().toISOString().split('T')[0];
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     guests: '2',
-    date: new Date().toISOString().split('T')[0],
+    date: todayStr,
     time: '13:00',
     notes: ''
   });
+  const [validationError, setValidationError] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormSubmitted(true);
+    setValidationError('');
+
+    // Validate past dates
+    const selectedDate = new Date(formData.date + 'T00:00:00');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      setValidationError('Please select today or a future date for your table reservation.');
+      return;
+    }
+
+    // Validate working hours (11:30 to 22:30)
+    const [h, m] = formData.time.split(':').map(Number);
+    const totalMinutes = h * 60 + m;
+    const minMinutes = 11 * 60 + 30; // 11:30 AM
+    const maxMinutes = 22 * 60 + 30; // 10:30 PM
+
+    if (totalMinutes < minMinutes || totalMinutes > maxMinutes) {
+      setValidationError('Reservations are only available during working hours (11:30 AM to 10:30 PM).');
+      return;
+    }
+
+    const formattedTime = formatAMPM(formData.time);
 
     // Format WhatsApp Reservation Message
     const message = `*TABLE RESERVATION REQUEST - CAFE ERTUGRUL*\n` +
@@ -25,12 +63,13 @@ export default function ContactPage() {
       `📞 *Phone Number:* ${formData.phone}\n` +
       `👥 *Number of Guests:* ${formData.guests}\n` +
       `📅 *Date:* ${formData.date}\n` +
-      `⏰ *Time:* ${formData.time}\n` +
+      `⏰ *Time:* ${formattedTime}\n` +
       `📝 *Notes:* ${formData.notes || 'None'}\n\n` +
       `Please confirm table availability for us. Thank you!`;
 
     const encodedText = encodeURIComponent(message);
     window.open(`https://wa.me/917780938743?text=${encodedText}`, '_blank');
+    setFormSubmitted(true);
   };
 
   return (
@@ -105,12 +144,30 @@ export default function ContactPage() {
               Select any time during working hours (11:30 AM to 10:30 PM). Your request will automatically open on WhatsApp for instant confirmation.
             </p>
 
+            {validationError && (
+              <div style={{
+                background: 'rgba(230, 57, 70, 0.15)',
+                border: '1px solid #e63946',
+                color: '#ff6b6b',
+                padding: '10px 14px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '0.88rem',
+                marginBottom: '1.25rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <AlertCircle size={18} style={{ flexShrink: 0 }} />
+                <span>{validationError}</span>
+              </div>
+            )}
+
             {formSubmitted ? (
               <div style={{ textAlign: 'center', padding: '2.5rem 1rem' }}>
                 <CheckCircle2 size={54} style={{ color: '#25D366', marginBottom: '1rem' }} />
                 <h4 className="font-heading gold-text" style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>RESERVATION SENT!</h4>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', marginBottom: '1.5rem' }}>
-                  Your reservation request was generated for <strong>{formData.name}</strong> on {formData.date} at {formData.time}.
+                  Your reservation request was generated for <strong>{formData.name}</strong> on {formData.date} at {formatAMPM(formData.time)}.
                 </p>
                 <button onClick={() => setFormSubmitted(false)} className="btn-secondary">
                   Book Another Table
@@ -163,6 +220,7 @@ export default function ContactPage() {
                     <input
                       type="date"
                       required
+                      min={todayStr}
                       className="form-control"
                       value={formData.date}
                       onChange={(e) => setFormData({ ...formData, date: e.target.value })}
@@ -170,7 +228,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Time (Anytime 11:30AM-10:30PM) *</label>
+                    <label className="form-label">Time (11:30 AM - 10:30 PM) *</label>
                     <input
                       type="time"
                       required
