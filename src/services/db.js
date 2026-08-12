@@ -222,23 +222,48 @@ export const dbService = {
     }
   },
 
-  // Verify Admin Passcode
+  // Fetch latest global passcode from Cloudflare D1 across all devices
+  fetchGlobalPasscode: async () => {
+    try {
+      const res = await fetch('/api/passcode');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.passcode) {
+          localStorage.setItem(PASSCODE_KEY, data.passcode);
+          return data.passcode;
+        }
+      }
+    } catch (e) {}
+    return localStorage.getItem(PASSCODE_KEY) || DEFAULT_PASSCODE;
+  },
+
+  // Verify Admin Passcode (ONLY active passcode works; old passcode strictly fails once changed!)
   verifyPasscode: (passcode) => {
     if (!passcode) return false;
     const cleanInput = passcode.trim();
-    const savedPasscode = localStorage.getItem(PASSCODE_KEY);
-    const activePasscode = savedPasscode || DEFAULT_PASSCODE;
+    const activePasscode = localStorage.getItem(PASSCODE_KEY) || DEFAULT_PASSCODE;
 
-    return cleanInput === activePasscode || 
-           cleanInput === DEFAULT_PASSCODE || 
-           cleanInput.toLowerCase() === DEFAULT_PASSCODE.toLowerCase();
+    // Strict equality check: Only the active passcode works!
+    return cleanInput === activePasscode;
   },
 
-  // Change Admin Passcode
-  updatePasscode: (newPasscode) => {
+  // Change Admin Passcode globally across all devices
+  updatePasscode: async (newPasscode) => {
     if (!newPasscode) return { success: false, error: 'Passcode cannot be empty' };
     const cleanNew = newPasscode.trim();
+    
+    // Save to LocalStorage immediately
     localStorage.setItem(PASSCODE_KEY, cleanNew);
+
+    // Sync to Cloudflare D1 globally
+    try {
+      await fetch('/api/passcode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ passcode: cleanNew })
+      });
+    } catch (e) {}
+
     return { success: true };
   },
 

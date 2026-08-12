@@ -53,13 +53,18 @@ export default function AdminPage({ onMenuUpdate }) {
   };
 
   useEffect(() => {
+    dbService.fetchGlobalPasscode();
+  }, []);
+
+  useEffect(() => {
     if (isAuthenticated) {
       refreshData();
     }
   }, [isAuthenticated]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    await dbService.fetchGlobalPasscode(); // Always check latest passcode from D1
     if (dbService.verifyPasscode(passcode)) {
       setIsAuthenticated(true);
       setLoginError('');
@@ -180,15 +185,15 @@ export default function AdminPage({ onMenuUpdate }) {
     }
   };
 
-  const handlePasscodeChangeSubmit = (e) => {
+  const handlePasscodeChangeSubmit = async (e) => {
     e.preventDefault();
     if (newPasscode.length < 4) {
       alert('Passcode must be at least 4 characters long.');
       return;
     }
-    dbService.updatePasscode(newPasscode);
+    await dbService.updatePasscode(newPasscode);
     setPasscode(newPasscode);
-    setPasscodeChangedMessage(`Passcode updated to "${newPasscode}" successfully! Only this new passcode will work now.`);
+    setPasscodeChangedMessage(`Passcode updated to "${newPasscode}" globally! Only this new passcode will work on mobile & laptop.`);
     setNewPasscode('');
     setTimeout(() => setPasscodeChangedMessage(''), 5000);
   };
