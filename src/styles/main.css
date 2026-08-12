@@ -122,7 +122,7 @@ h1, h2, h3, h4, .font-heading {
 .broadcast-marquee-track {
   display: inline-block;
   white-space: nowrap;
-  animation: marqueeScroll 22s linear infinite;
+  animation: marqueeScroll 11s linear infinite;
   padding-left: 100%;
 }
 
