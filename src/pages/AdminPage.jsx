@@ -341,7 +341,7 @@ export default function AdminPage({ onMenuUpdate }) {
           className={`category-pill ${activeTab === 'settings' ? 'active' : ''}`}
           style={{ padding: '9px 18px', fontSize: '0.88rem', flexShrink: 0 }}
         >
-          <Key size={16} /> Settings & Passcode
+          <Key size={16} /> Passcode
         </button>
       </div>
 
@@ -636,9 +636,9 @@ export default function AdminPage({ onMenuUpdate }) {
         </div>
       )}
 
-      {/* TAB 4: SETTINGS & PASSCODE */}
+      {/* TAB 4: PASSCODE */}
       {activeTab === 'settings' && (
-        <div style={{ maxWidth: '600px', margin: '0 auto', display: 'grid', gap: '1.5rem' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           <div className="glass-card">
             <h3 className="font-heading gold-text" style={{ fontSize: '1.3rem', marginBottom: '1rem' }}>Change Admin Passcode</h3>
             {passcodeChangedMessage && (
@@ -662,16 +662,6 @@ export default function AdminPage({ onMenuUpdate }) {
                 Update Passcode
               </button>
             </form>
-          </div>
-
-          <div className="glass-card">
-            <h3 className="font-heading gold-text" style={{ fontSize: '1.3rem', marginBottom: '1rem' }}>Reset To Original Defaults</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.25rem' }}>
-              Restore original 91 dishes dataset. Useful if you want to clear test dishes.
-            </p>
-            <button onClick={handleResetDefaults} className="btn-secondary" style={{ color: '#e63946', borderColor: '#e63946' }}>
-              <RefreshCw size={16} /> Restore Default Menu (91 Items)
-            </button>
           </div>
         </div>
       )}
