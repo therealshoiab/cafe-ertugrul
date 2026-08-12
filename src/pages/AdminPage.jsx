@@ -4,7 +4,7 @@ import { MENU_CATEGORIES } from '../data/menuData';
 import { 
   Lock, Key, LogOut, Plus, Edit3, Trash2, Eye, EyeOff, 
   Check, AlertTriangle, Image as ImageIcon, Upload, Search, 
-  RefreshCw, Utensils, Shield, Sparkles, Filter, ToggleLeft, ToggleRight
+  RefreshCw, Utensils, Shield, Sparkles, Filter, ToggleLeft, ToggleRight, Radio
 } from 'lucide-react';
 
 export default function AdminPage({ onMenuUpdate }) {
@@ -16,16 +16,15 @@ export default function AdminPage({ onMenuUpdate }) {
   // Dashboard States
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [activeTab, setActiveTab] = useState('add'); // 'add', 'manage', 'settings'
+  const [activeTab, setActiveTab] = useState('add'); // 'add', 'manage', 'broadcast', 'settings'
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Form States for Adding New Dish
+  // Form State for Add Dish
   const [formData, setFormData] = useState({
     name: '',
     category: 'biryani-rice',
     price: '',
-    originalPrice: '',
     isVeg: false,
     description: '',
     image: '',
@@ -35,22 +34,28 @@ export default function AdminPage({ onMenuUpdate }) {
   const [formSuccess, setFormSuccess] = useState('');
   const [formError, setFormError] = useState('');
 
-  // Edit Item Modal State
+  // Broadcast Message State
+  const [broadcastText, setBroadcastText] = useState('');
+  const [broadcastSuccess, setBroadcastSuccess] = useState('');
+
+  // Quick Edit State
   const [editingItem, setEditingItem] = useState(null);
   const [newPasscode, setNewPasscode] = useState('');
   const [passcodeChangedMessage, setPasscodeChangedMessage] = useState('');
 
-  // Load items on mount
   const refreshData = () => {
-    const allItems = dbService.getMenuItems();
-    setItems(allItems);
+    const list = dbService.getMenuItems();
+    setItems(list);
     setCategories(dbService.getCategories());
+    setBroadcastText(dbService.getBroadcastMessage());
     if (onMenuUpdate) onMenuUpdate();
   };
 
   useEffect(() => {
-    refreshData();
-  }, []);
+    if (isAuthenticated) {
+      refreshData();
+    }
+  }, [isAuthenticated]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -81,7 +86,7 @@ export default function AdminPage({ onMenuUpdate }) {
     }
   };
 
-  const handleAddSubmit = (e) => {
+  const handleAddSubmit = async (e) => {
     e.preventDefault();
     setFormSuccess('');
     setFormError('');
@@ -91,14 +96,13 @@ export default function AdminPage({ onMenuUpdate }) {
       return;
     }
 
-    const result = dbService.addMenuItem(formData);
-    if (result.success) {
-      setFormSuccess(`"${formData.name}" has been added to the menu!`);
+    const result = await dbService.addMenuItem(formData, passcode);
+    if (result && result.success) {
+      setFormSuccess(`"${formData.name}" has been added to the menu live!`);
       setFormData({
         name: '',
         category: 'biryani-rice',
         price: '',
-        originalPrice: '',
         isVeg: false,
         description: '',
         image: '',
@@ -108,36 +112,44 @@ export default function AdminPage({ onMenuUpdate }) {
       refreshData();
       setTimeout(() => setFormSuccess(''), 4000);
     } else {
-      setFormError('Failed to add dish: ' + result.error);
+      setFormError('Failed to add dish: ' + (result?.error || 'Unknown error'));
     }
   };
 
-  const handleStockToggle = (id) => {
-    dbService.toggleStock(id);
+  const handleStockToggle = async (id) => {
+    await dbService.toggleStock(id, passcode);
     refreshData();
   };
 
-  const handleDelete = (id, name) => {
+  const handleDelete = async (id, name) => {
     if (window.confirm(`Are you sure you want to delete "${name}" from the menu?`)) {
-      dbService.deleteMenuItem(id);
+      await dbService.deleteMenuItem(id, passcode);
       refreshData();
     }
   };
 
-  const handleQuickEditSave = (e) => {
+  const handleQuickEditSave = async (e) => {
     e.preventDefault();
     if (!editingItem) return;
 
-    dbService.updateMenuItem(editingItem.id, {
+    await dbService.updateMenuItem(editingItem.id, {
       name: editingItem.name,
       price: editingItem.price,
       description: editingItem.description,
       category: editingItem.category,
       isVeg: editingItem.isVeg
-    });
+    }, passcode);
 
     setEditingItem(null);
     refreshData();
+  };
+
+  const handleBroadcastSubmit = (e) => {
+    e.preventDefault();
+    dbService.updateBroadcastMessage(broadcastText);
+    setBroadcastSuccess('Home page ticker broadcast message updated successfully!');
+    refreshData();
+    setTimeout(() => setBroadcastSuccess(''), 4000);
   };
 
   const handleResetDefaults = () => {
@@ -169,9 +181,7 @@ export default function AdminPage({ onMenuUpdate }) {
     return true;
   });
 
-  // ----------------------------------------------------
   // LOGIN SCREEN
-  // ----------------------------------------------------
   if (!isAuthenticated) {
     return (
       <div className="section-padding container" style={{ minHeight: '75vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -238,9 +248,7 @@ export default function AdminPage({ onMenuUpdate }) {
     );
   }
 
-  // ----------------------------------------------------
   // ADMIN DASHBOARD
-  // ----------------------------------------------------
   return (
     <div className="admin-page section-padding container">
       {/* Header */}
@@ -249,7 +257,7 @@ export default function AdminPage({ onMenuUpdate }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <h2 className="font-heading gold-text" style={{ fontSize: 'clamp(1.4rem, 4vw, 2rem)' }}>CAFE ERTUGRUL ADMIN</h2>
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginTop: '4px' }}>Add new dishes, update prices, toggle stock availability, and upload food photos live.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginTop: '4px' }}>Add new dishes, update prices, broadcast offers, and manage stock live.</p>
         </div>
 
         <button onClick={handleLogout} className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
@@ -277,7 +285,7 @@ export default function AdminPage({ onMenuUpdate }) {
         </div>
       </div>
 
-      {/* Navigation Tabs (Scrollable on Mobile) */}
+      {/* Navigation Tabs */}
       <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '2rem', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
         <button
           onClick={() => setActiveTab('add')}
@@ -292,6 +300,13 @@ export default function AdminPage({ onMenuUpdate }) {
           style={{ padding: '9px 18px', fontSize: '0.88rem', flexShrink: 0 }}
         >
           <Utensils size={16} /> Manage Menu & Prices ({items.length})
+        </button>
+        <button
+          onClick={() => setActiveTab('broadcast')}
+          className={`category-pill ${activeTab === 'broadcast' ? 'active' : ''}`}
+          style={{ padding: '9px 18px', fontSize: '0.88rem', flexShrink: 0 }}
+        >
+          <Radio size={16} /> Live Home Ticker Broadcast
         </button>
         <button
           onClick={() => setActiveTab('settings')}
@@ -349,9 +364,9 @@ export default function AdminPage({ onMenuUpdate }) {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.25rem' }} className="form-row-3">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }} className="form-row-3">
               <div className="form-group">
-                <label className="form-label">Selling Price (₹) *</label>
+                <label className="form-label">Price (₹) *</label>
                 <input
                   type="number"
                   required
@@ -360,18 +375,6 @@ export default function AdminPage({ onMenuUpdate }) {
                   placeholder="e.g. 350"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Original Price (₹) (Optional)</label>
-                <input
-                  type="number"
-                  min="0"
-                  className="form-control"
-                  placeholder="e.g. 500 (for discount badge)"
-                  value={formData.originalPrice}
-                  onChange={(e) => setFormData({ ...formData, originalPrice: e.target.value })}
                 />
               </div>
 
@@ -409,10 +412,10 @@ export default function AdminPage({ onMenuUpdate }) {
               />
             </div>
 
-            {/* Photo Selection */}
+            {/* Photo Selection (Optional) */}
             <div className="form-group" style={{ background: 'rgba(15, 10, 7, 0.5)', padding: '1.25rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-gold)' }}>
               <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <ImageIcon size={18} style={{ color: 'var(--primary-gold)' }} /> Dish Photo (Pick From Phone / Laptop Gallery or Paste Image URL)
+                <ImageIcon size={18} style={{ color: 'var(--primary-gold)' }} /> Dish Photo (Optional)
               </label>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '10px' }} className="form-row-3">
@@ -517,37 +520,34 @@ export default function AdminPage({ onMenuUpdate }) {
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1rem' }}>{item.description}</p>
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '10px', borderTop: '1px solid var(--border-light)' }}>
-                  {/* Stock Toggle Button */}
                   <button
                     onClick={() => handleStockToggle(item.id)}
-                    style={{ 
-                      fontSize: '0.8rem', 
-                      fontWeight: 700, 
-                      color: item.isAvailable === false ? '#e63946' : '#2a9d8f',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '5px'
+                    className="btn-secondary"
+                    style={{
+                      padding: '6px 12px',
+                      fontSize: '0.78rem',
+                      borderColor: item.isAvailable === false ? '#e63946' : '#2a9d8f',
+                      color: item.isAvailable === false ? '#ff6b6b' : '#2a9d8f'
                     }}
                   >
-                    {item.isAvailable === false ? (
-                      <><ToggleLeft size={20} /> Out of Stock</>
-                    ) : (
-                      <><ToggleRight size={20} /> In Stock</>
-                    )}
+                    {item.isAvailable === false ? <ToggleLeft size={14} /> : <ToggleRight size={14} />}
+                    {item.isAvailable === false ? 'Out of Stock' : 'In Stock'}
                   </button>
 
-                  <div style={{ display: 'flex', gap: '8px' }}>
+                  <div style={{ display: 'flex', gap: '6px' }}>
                     <button
                       onClick={() => setEditingItem(item)}
                       className="btn-secondary"
-                      style={{ padding: '6px 10px', fontSize: '0.75rem' }}
-                      title="Quick Edit Dish"
+                      style={{ padding: '6px 10px', fontSize: '0.78rem' }}
+                      title="Edit Price & Name"
                     >
-                      <Edit3 size={14} /> Edit
+                      <Edit3 size={14} /> Edit Price
                     </button>
+
                     <button
                       onClick={() => handleDelete(item.id, item.name)}
-                      style={{ color: '#e63946', padding: '6px 10px', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(230, 57, 70, 0.3)', background: 'rgba(230, 57, 70, 0.1)' }}
+                      className="btn-secondary"
+                      style={{ padding: '6px 10px', fontSize: '0.78rem', color: '#e63946', borderColor: '#e63946' }}
                       title="Delete Dish"
                     >
                       <Trash2 size={14} />
@@ -560,19 +560,52 @@ export default function AdminPage({ onMenuUpdate }) {
         </div>
       )}
 
-      {/* TAB 3: SETTINGS & SECURITY */}
+      {/* TAB 3: LIVE HOME TICKER BROADCAST */}
+      {activeTab === 'broadcast' && (
+        <div className="glass-card" style={{ maxWidth: '750px', margin: '0 auto' }}>
+          <h3 className="font-heading gold-text" style={{ fontSize: '1.4rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Radio size={22} style={{ color: '#25D366' }} /> Broadcast Announcement Ticker On Home Page
+          </h3>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+            Type a promotional announcement, weekend discount offer, or event message. It will scroll live from right to left across the top of the Home Page!
+          </p>
+
+          {broadcastSuccess && (
+            <div style={{ background: 'rgba(42, 157, 143, 0.2)', border: '1px solid #2a9d8f', color: '#2a9d8f', padding: '12px 16px', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Check size={20} /> <strong>{broadcastSuccess}</strong>
+            </div>
+          )}
+
+          <form onSubmit={handleBroadcastSubmit}>
+            <div className="form-group">
+              <label className="form-label">Broadcast Announcement Text *</label>
+              <textarea
+                rows={3}
+                required
+                className="form-control"
+                placeholder="e.g. 🎉 Weekend Special Offer! 15% OFF on all Wazwan Combos & Free Saffron Almond Shake with orders above ₹999!"
+                value={broadcastText}
+                onChange={(e) => setBroadcastText(e.target.value)}
+              />
+            </div>
+
+            <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', background: '#25D366', color: '#fff' }}>
+              <Radio size={18} /> Update Live Home Page Broadcast
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* TAB 4: SETTINGS & PASSCODE */}
       {activeTab === 'settings' && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }} className="contact-grid">
+        <div style={{ maxWidth: '600px', margin: '0 auto', display: 'grid', gap: '1.5rem' }}>
           <div className="glass-card">
             <h3 className="font-heading gold-text" style={{ fontSize: '1.3rem', marginBottom: '1rem' }}>Change Admin Passcode</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.25rem' }}>Update passcode used to access this Admin Panel.</p>
-
             {passcodeChangedMessage && (
-              <div style={{ color: '#2a9d8f', marginBottom: '1rem', fontWeight: 600, fontSize: '0.9rem' }}>
-                ✓ {passcodeChangedMessage}
+              <div style={{ background: 'rgba(42, 157, 143, 0.2)', border: '1px solid #2a9d8f', color: '#2a9d8f', padding: '10px 14px', borderRadius: 'var(--radius-sm)', marginBottom: '1rem' }}>
+                {passcodeChangedMessage}
               </div>
             )}
-
             <form onSubmit={handlePasscodeChangeSubmit}>
               <div className="form-group">
                 <label className="form-label">New Passcode</label>
@@ -662,7 +695,7 @@ export default function AdminPage({ onMenuUpdate }) {
                   Cancel
                 </button>
                 <button type="submit" className="btn-primary">
-                  Save Changes
+                  Save Changes Live
                 </button>
               </div>
             </form>

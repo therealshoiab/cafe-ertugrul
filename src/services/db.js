@@ -83,17 +83,21 @@ export const dbService = {
         name: newItem.name.trim(),
         category: newItem.category,
         price: Number(newItem.price),
-        originalPrice: newItem.originalPrice ? Number(newItem.originalPrice) : null,
+        originalPrice: null,
         isVeg: Boolean(newItem.isVeg),
-        description: newItem.description.trim(),
-        image: newItem.image || './images/biryani.png',
+        description: newItem.description ? newItem.description.trim() : 'Delicious specialty prepared fresh at Cafe Ertugrul.',
+        image: newItem.image ? newItem.image.trim() : '',
         popular: Boolean(newItem.popular),
         rating: 5.0,
         isAvailable: true,
         createdAt: new Date().toISOString()
       };
 
-      // Try Cloudflare D1 post
+      // Always save to LocalStorage first for instant persistence
+      const updatedList = [itemToAdd, ...current];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
+
+      // Try Cloudflare D1 post in background
       try {
         await fetch('/api/menu', {
           method: 'POST',
@@ -104,11 +108,9 @@ export const dbService = {
           body: JSON.stringify({ action: 'add', item: itemToAdd })
         });
       } catch (e) {
-        console.log('Saved to LocalStorage mode.');
+        console.log('Saved locally.');
       }
 
-      const updatedList = [itemToAdd, ...current];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
       return { success: true, item: itemToAdd };
     } catch (err) {
       console.error('Error adding menu item:', err);
@@ -126,11 +128,13 @@ export const dbService = {
             ...item,
             ...updatedFields,
             price: updatedFields.price !== undefined ? Number(updatedFields.price) : item.price,
-            originalPrice: updatedFields.originalPrice ? Number(updatedFields.originalPrice) : item.originalPrice,
           };
         }
         return item;
       });
+
+      // Always save to LocalStorage first for instant persistence
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
 
       try {
         await fetch('/api/menu', {
@@ -143,7 +147,6 @@ export const dbService = {
         });
       } catch (e) {}
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
       return { success: true };
     } catch (err) {
       return { success: false, error: err.message };
@@ -235,5 +238,23 @@ export const dbService = {
   updatePasscode: (newPasscode) => {
     localStorage.setItem(PASSCODE_KEY, newPasscode);
     return { success: true };
+  },
+
+  // Broadcast Message Methods for Home Page Announcement Ticker
+  getBroadcastMessage: () => {
+    try {
+      return localStorage.getItem('cafe_ertugrul_broadcast_announcement') || '👑 Welcome to Cafe Ertugrul! Savor authentic Kashmiri Wazwan, Mutton Kanti, Saffron Biryani & Charcoal Kebabs at Solina Bazar, Airport Rd, Srinagar!';
+    } catch (e) {
+      return '';
+    }
+  },
+
+  updateBroadcastMessage: (msg) => {
+    try {
+      localStorage.setItem('cafe_ertugrul_broadcast_announcement', msg);
+      return { success: true };
+    } catch (e) {
+      return { success: false, error: e.message };
+    }
   }
 };

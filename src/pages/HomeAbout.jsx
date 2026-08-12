@@ -5,6 +5,8 @@ import {
 } from 'lucide-react';
 import { RESTAURANT_INFO } from '../data/menuData';
 
+import { dbService } from '../services/db';
+
 const SLIDESHOW_IMAGES = [
   './images/slideshow/slide1.jpg',
   './images/slideshow/slide2.jpg',
@@ -15,6 +17,11 @@ const SLIDESHOW_IMAGES = [
 
 export default function HomeAbout({ setActivePage }) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [broadcastMsg, setBroadcastMsg] = useState('');
+
+  useEffect(() => {
+    setBroadcastMsg(dbService.getBroadcastMessage());
+  }, []);
 
   // Auto-play hero background slideshow
   useEffect(() => {
@@ -29,6 +36,15 @@ export default function HomeAbout({ setActivePage }) {
 
   return (
     <div className="home-about-page">
+      {/* LIVE BROADCAST ANNOUNCEMENT TICKER */}
+      {broadcastMsg && (
+        <div className="broadcast-marquee-bar">
+          <div className="broadcast-marquee-track">
+            <span>{broadcastMsg} &nbsp;&nbsp;••&nbsp;&nbsp; {broadcastMsg}</span>
+          </div>
+        </div>
+      )}
+
       {/* HERO SECTION WITH BACKGROUND SLIDESHOW */}
       <section className="hero">
         {/* Slideshow Background Images */}

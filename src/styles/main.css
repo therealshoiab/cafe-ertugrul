@@ -40,7 +40,7 @@ html, body, #root, .app-root {
 }
 
 *, *::before, *::after {
-  box-sizing: border-box;
+  box-sizing: border-box !important;
   max-width: 100%;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -97,10 +97,38 @@ h1, h2, h3, h4, .font-heading {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 1.25rem;
+  box-sizing: border-box;
 }
 
 .section-padding {
   padding: 3.5rem 0;
+}
+
+/* LIVE BROADCAST TICKER MARQUEE */
+.broadcast-marquee-bar {
+  background: linear-gradient(90deg, #9e6d20 0%, #e5b757 50%, #9e6d20 100%);
+  color: #0f0a07;
+  font-weight: 800;
+  font-size: 0.88rem;
+  padding: 8px 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(229, 183, 87, 0.4);
+  z-index: 100;
+  width: 100%;
+}
+
+.broadcast-marquee-track {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marqueeScroll 22s linear infinite;
+  padding-left: 100%;
+}
+
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }
 
 /* Navbar */
@@ -435,6 +463,7 @@ h1, h2, h3, h4, .font-heading {
   transition: var(--transition-fast);
   width: 100%;
   box-shadow: var(--shadow-main);
+  box-sizing: border-box;
 }
 
 .glass-card:hover {
@@ -456,6 +485,7 @@ h1, h2, h3, h4, .font-heading {
   width: 100%;
   backdrop-filter: blur(12px);
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  box-sizing: border-box;
 }
 
 .menu-search-input {
@@ -472,6 +502,7 @@ h1, h2, h3, h4, .font-heading {
 .diet-filter-container {
   margin-bottom: 1.25rem;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .segmented-diet-control {
@@ -486,6 +517,7 @@ h1, h2, h3, h4, .font-heading {
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
   width: fit-content;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 .diet-btn {
@@ -831,6 +863,7 @@ h1, h2, h3, h4, .font-heading {
   color: var(--text-main);
   font-family: inherit;
   font-size: 0.92rem;
+  box-sizing: border-box;
 }
 
 .form-control:focus {
@@ -965,7 +998,7 @@ h1, h2, h3, h4, .font-heading {
 
 @media (max-width: 576px) {
   .container {
-    padding: 0 1rem;
+    padding: 0 1rem !important;
   }
   .section-padding {
     padding: 2rem 0;
@@ -1003,7 +1036,7 @@ h1, h2, h3, h4, .font-heading {
 
   /* Segmented Diet Control Full Width for Mobile */
   .segmented-diet-control {
-    width: 100%;
+    width: 100% !important;
     justify-content: space-between;
   }
   .diet-btn {
@@ -1011,6 +1044,12 @@ h1, h2, h3, h4, .font-heading {
     justify-content: center;
     padding: 8px 10px;
     font-size: 0.8rem;
+  }
+
+  .menu-search-bar, .diet-filter-container, .admin-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .menu-grid {
