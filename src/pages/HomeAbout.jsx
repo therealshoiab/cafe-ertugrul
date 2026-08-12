@@ -122,7 +122,7 @@ export default function HomeAbout({ setActivePage }) {
             Nestled in the bustling heart of Solina Bazar along Airport Road in Srinagar, <strong>Cafe Ertugrul</strong> was born out of a deep reverence for two legendary culinary traditions — the rich, aromatic heritage of Kashmiri Wazwan and the warm, opulent hospitality of Ottoman dining culture.
           </p>
 
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem', lineHeight: '1.8', marginBottom: '1.75rem' }}>
+          <p style={{ color: 'var(--text-main)', fontSize: '1.05rem', lineHeight: '1.8', marginBottom: '1.75rem' }}>
             Every dish served at Cafe Ertugrul tells a story of craftsmanship. From slow-simmered Kashmiri Mutton Biryani infused with pure saffron to hand-skewered Mutton Kanti cooked over hot coals, we select only the finest local ingredients and authentic Kashmiri spices to ensure an unforgettable dining experience.
           </p>
 
@@ -131,21 +131,21 @@ export default function HomeAbout({ setActivePage }) {
               <div style={{ color: 'var(--primary-gold)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <ShieldCheck size={20} /> Authentic Ingredients
               </div>
-              <div style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>Pure saffron, hand-ground Kashmiri chilies, and fresh local produce every morning.</div>
+              <div style={{ color: 'var(--text-main)', fontSize: '0.92rem' }}>Pure saffron, hand-ground Kashmiri chilies, and fresh local produce every morning.</div>
             </div>
 
             <div style={{ background: 'rgba(15, 10, 7, 0.6)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-sm)', padding: '1.25rem' }}>
               <div style={{ color: 'var(--primary-gold)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <HeartHandshake size={20} /> Royal Ambiance
               </div>
-              <div style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>Warm wooden interiors, traditional seating, and polite hospitality for families & guests.</div>
+              <div style={{ color: 'var(--text-main)', fontSize: '0.92rem' }}>Warm wooden interiors, traditional seating, and polite hospitality for families & guests.</div>
             </div>
 
             <div style={{ background: 'rgba(15, 10, 7, 0.6)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-sm)', padding: '1.25rem' }}>
               <div style={{ color: 'var(--primary-gold)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Award size={20} /> Master Chefs
               </div>
-              <div style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>Experienced Kashmiri chefs specializing in Tandoor, Wazwan, Kebabs, and fusion rolls.</div>
+              <div style={{ color: 'var(--text-main)', fontSize: '0.92rem' }}>Experienced Kashmiri chefs specializing in Tandoor, Wazwan, Kebabs, and fusion rolls.</div>
             </div>
           </div>
         </div>

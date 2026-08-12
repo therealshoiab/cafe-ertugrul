@@ -132,9 +132,6 @@ export default function MenuPage() {
 
       {/* Filter Pills Bar */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
-        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <Filter size={14} /> Filter:
-        </span>
         <button
           onClick={() => setDietFilter('all')}
           className={`category-pill ${dietFilter === 'all' ? 'active' : ''}`}
@@ -185,11 +182,6 @@ export default function MenuPage() {
             <span className="category-badge-count">{cat.count}</span>
           </button>
         ))}
-      </div>
-
-      {/* Results Info */}
-      <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.25rem' }}>
-        Showing <strong style={{ color: 'var(--primary-gold)' }}>{filteredItems.length}</strong> items
       </div>
 
       {/* Menu Grid */}
