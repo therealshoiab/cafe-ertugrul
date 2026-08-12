@@ -1,0 +1,11 @@
+{
+  "name": "cafe-ertugrul",
+  "pages_build_output_dir": "./dist",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cafe-ertugrul-db",
+      "database_id": "8bf8b7d5-dd1a-4b01-86ac-69c3f728de00"
+    }
+  ]
+}
