@@ -16,11 +16,14 @@ const SLIDESHOW_IMAGES = [
 ];
 
 export default function HomeAbout({ setActivePage }) {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [broadcastMsg, setBroadcastMsg] = useState('');
+  const [broadcastMsg, setBroadcastMsg] = useState(dbService.getBroadcastMessage());
 
   useEffect(() => {
-    setBroadcastMsg(dbService.getBroadcastMessage());
+    const loadLiveBroadcast = async () => {
+      const liveMsg = await dbService.fetchGlobalBroadcast();
+      setBroadcastMsg(liveMsg);
+    };
+    loadLiveBroadcast();
   }, []);
 
   // Auto-play hero background slideshow

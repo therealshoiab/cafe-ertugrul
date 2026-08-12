@@ -276,9 +276,35 @@ export const dbService = {
     }
   },
 
-  updateBroadcastMessage: (msg) => {
+  // Fetch live global broadcast announcement from Cloudflare D1 across all devices
+  fetchGlobalBroadcast: async () => {
     try {
-      localStorage.setItem('cafe_ertugrul_broadcast_announcement', msg);
+      const res = await fetch('/api/broadcast');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.broadcast !== undefined) {
+          localStorage.setItem('cafe_ertugrul_broadcast_announcement', data.broadcast);
+          return data.broadcast;
+        }
+      }
+    } catch (e) {}
+    return dbService.getBroadcastMessage();
+  },
+
+  updateBroadcastMessage: async (msg) => {
+    try {
+      const clean = (msg || '').trim();
+      localStorage.setItem('cafe_ertugrul_broadcast_announcement', clean);
+
+      // Sync to Cloudflare D1 globally
+      try {
+        await fetch('/api/broadcast', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ broadcast: clean })
+        });
+      } catch (e) {}
+
       return { success: true };
     } catch (e) {
       return { success: false, error: e.message };

@@ -46,9 +46,10 @@ export default function AdminPage({ onMenuUpdate }) {
   const refreshData = async () => {
     // Fetch live from Cloudflare D1 across devices
     const list = await dbService.fetchFromCloudflareD1();
+    const liveBroadcast = await dbService.fetchGlobalBroadcast();
     setItems(list);
     setCategories(dbService.getCategories());
-    setBroadcastText(dbService.getBroadcastMessage());
+    setBroadcastText(liveBroadcast);
     if (onMenuUpdate) onMenuUpdate();
   };
 
@@ -162,18 +163,18 @@ export default function AdminPage({ onMenuUpdate }) {
     refreshData();
   };
 
-  const handleBroadcastSubmit = (e) => {
+  const handleBroadcastSubmit = async (e) => {
     e.preventDefault();
-    dbService.updateBroadcastMessage(broadcastText);
-    setBroadcastSuccess('Home page ticker broadcast message published live!');
+    await dbService.updateBroadcastMessage(broadcastText);
+    setBroadcastSuccess('Home page ticker broadcast message published live globally!');
     refreshData();
     setTimeout(() => setBroadcastSuccess(''), 4000);
   };
 
-  const handleClearBroadcast = () => {
-    dbService.updateBroadcastMessage('');
+  const handleClearBroadcast = async () => {
+    await dbService.updateBroadcastMessage('');
     setBroadcastText('');
-    setBroadcastSuccess('Live Home Page Broadcast Ticker stopped / cleared.');
+    setBroadcastSuccess('Live Home Page Broadcast Ticker stopped / cleared globally.');
     refreshData();
     setTimeout(() => setBroadcastSuccess(''), 4000);
   };
