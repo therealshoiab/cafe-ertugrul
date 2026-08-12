@@ -59,7 +59,7 @@ export default function HomeAbout({ setActivePage }) {
 
           <div className="hero-buttons">
             <button onClick={() => setActivePage('menu')} className="btn-primary">
-              <Utensils size={18} /> Explore Menu (91 Items)
+              <Utensils size={18} /> Explore Menu
             </button>
             <button onClick={() => setActivePage('contact')} className="btn-secondary">
               <MapPin size={18} /> Find Us / Contact

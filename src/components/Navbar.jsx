@@ -93,7 +93,7 @@ export default function Navbar({ activePage, setActivePage }) {
             className={`nav-link ${activePage === 'menu' ? 'active' : ''}`}
             style={{ textAlign: 'left', fontSize: '1.1rem', padding: '10px 0' }}
           >
-            📜 Explore Full Menu (91 Items)
+            📜 Explore Full Menu
           </button>
           <button 
             onClick={() => handleNavClick('contact')} 
