@@ -206,9 +206,8 @@ export default function AdminPage({ onMenuUpdate }) {
 
           <form onSubmit={handleLogin}>
             <div className="form-group">
-              <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <label className="form-label">
                 <span>Admin Passcode</span>
-                <span style={{ color: 'var(--primary-gold)', fontSize: '0.75rem' }}>Default: ertugrul2026</span>
               </label>
               <div style={{ position: 'relative' }}>
                 <input
