@@ -215,8 +215,20 @@ export const dbService = {
 
   // Verify Admin Passcode
   verifyPasscode: (passcode) => {
-    const savedPasscode = localStorage.getItem(PASSCODE_KEY) || DEFAULT_PASSCODE;
-    return passcode === savedPasscode;
+    if (!passcode) return false;
+    const cleanInput = passcode.trim();
+    const savedPasscode = localStorage.getItem(PASSCODE_KEY);
+
+    // Accept new master password, legacy password, or saved password
+    const isMaster = cleanInput === 'Ertugrul@2026' || cleanInput.toLowerCase() === 'ertugrul2026';
+    const isSaved = savedPasscode && cleanInput === savedPasscode;
+
+    if (isMaster || isSaved) {
+      // Sync local storage with current valid passcode
+      localStorage.setItem(PASSCODE_KEY, cleanInput);
+      return true;
+    }
+    return false;
   },
 
   // Change Admin Passcode
