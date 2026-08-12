@@ -147,7 +147,15 @@ export default function AdminPage({ onMenuUpdate }) {
   const handleBroadcastSubmit = (e) => {
     e.preventDefault();
     dbService.updateBroadcastMessage(broadcastText);
-    setBroadcastSuccess('Home page ticker broadcast message updated successfully!');
+    setBroadcastSuccess('Home page ticker broadcast message published live!');
+    refreshData();
+    setTimeout(() => setBroadcastSuccess(''), 4000);
+  };
+
+  const handleClearBroadcast = () => {
+    dbService.updateBroadcastMessage('');
+    setBroadcastText('');
+    setBroadcastSuccess('Live Home Page Broadcast Ticker stopped / cleared.');
     refreshData();
     setTimeout(() => setBroadcastSuccess(''), 4000);
   };
@@ -578,7 +586,7 @@ export default function AdminPage({ onMenuUpdate }) {
 
           <form onSubmit={handleBroadcastSubmit}>
             <div className="form-group">
-              <label className="form-label">Broadcast Announcement Text *</label>
+              <label className="form-label">Broadcast Announcement Text</label>
               <textarea
                 rows={3}
                 required
@@ -589,9 +597,17 @@ export default function AdminPage({ onMenuUpdate }) {
               />
             </div>
 
-            <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', background: '#25D366', color: '#fff' }}>
-              <Radio size={18} /> Update Live Home Page Broadcast
-            </button>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '1.25rem' }}>
+              <button type="submit" className="btn-primary" style={{ flexGrow: 1, justifyContent: 'center', background: '#25D366', color: '#fff' }}>
+                <Radio size={18} /> Publish Live Broadcast
+              </button>
+
+              {broadcastText && (
+                <button type="button" onClick={handleClearBroadcast} className="btn-secondary" style={{ color: '#e63946', borderColor: '#e63946' }}>
+                  <Trash2 size={16} /> Stop / Clear Broadcast
+                </button>
+              )}
+            </div>
           </form>
         </div>
       )}

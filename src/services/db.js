@@ -243,7 +243,7 @@ export const dbService = {
   // Broadcast Message Methods for Home Page Announcement Ticker
   getBroadcastMessage: () => {
     try {
-      return localStorage.getItem('cafe_ertugrul_broadcast_announcement') || '👑 Welcome to Cafe Ertugrul! Savor authentic Kashmiri Wazwan, Mutton Kanti, Saffron Biryani & Charcoal Kebabs at Solina Bazar, Airport Rd, Srinagar!';
+      return localStorage.getItem('cafe_ertugrul_broadcast_announcement') || '';
     } catch (e) {
       return '';
     }
