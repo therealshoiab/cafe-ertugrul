@@ -214,10 +214,10 @@ export default function HomeAbout({ setActivePage }) {
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <button onClick={() => setActivePage('menu')} className="btn-primary" style={{ background: '#0f0a07', color: 'var(--primary-gold)' }}>
-              <Utensils size={18} /> View Menu (91 Items)
+              <Utensils size={18} /> View Menu
             </button>
-            <a href="https://wa.me/917780938743" target="_blank" rel="noreferrer" className="btn-secondary" style={{ borderColor: '#0f0a07', color: '#0f0a07', fontWeight: 700 }}>
-              Order via WhatsApp
+            <a href="https://wa.me/917780938743" target="_blank" rel="noreferrer" className="btn-primary" style={{ background: '#25D366', color: '#ffffff', boxShadow: '0 4px 15px rgba(37, 211, 102, 0.4)' }}>
+              <MessageSquare size={18} /> Order via WhatsApp
             </a>
           </div>
         </div>

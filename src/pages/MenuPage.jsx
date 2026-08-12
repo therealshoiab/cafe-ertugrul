@@ -3,7 +3,7 @@ import { dbService } from '../services/db';
 import { RESTAURANT_INFO } from '../data/menuData';
 import { 
   Search, Star, Utensils, ShoppingBag, X, Phone, Check, Flame, Gift, 
-  Filter, AlertCircle, MessageSquare, Plus, Minus, ArrowRight, ShoppingCart
+  Filter, AlertCircle, MessageSquare, Plus, Minus, ArrowRight, ShoppingCart, Edit3
 } from 'lucide-react';
 
 export default function MenuPage() {
@@ -11,6 +11,7 @@ export default function MenuPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [dietFilter, setDietFilter] = useState('all'); // 'all', 'veg', 'non-veg', 'cart-only'
   const [orderList, setOrderList] = useState([]);
+  const [orderNotes, setOrderNotes] = useState('');
   const [showOrderDrawer, setShowOrderDrawer] = useState(false);
 
   // Dynamic menu state
@@ -94,6 +95,9 @@ export default function MenuPage() {
 
     message += `\n-----------------------------------\n`;
     message += `💰 *TOTAL AMOUNT:* ₹${totalPrice}\n`;
+    if (orderNotes.trim()) {
+      message += `📝 *Special Notes:* ${orderNotes.trim()}\n`;
+    }
     message += `\n*Customer Request:* Please prepare my order for takeaway collection. Thank you!`;
 
     const encodedText = encodeURIComponent(message);
@@ -339,25 +343,42 @@ export default function MenuPage() {
                   <p style={{ fontSize: '0.85rem', marginTop: '6px' }}>Add items from the menu to build your takeaway list.</p>
                 </div>
               ) : (
-                orderList.map((item) => (
-                  <div key={item.id} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '12px 0',
-                    borderBottom: '1px solid var(--border-light)'
-                  }}>
-                    <div style={{ flexGrow: 1 }}>
-                      <div style={{ color: '#fff', fontWeight: 600, fontSize: '0.95rem' }}>{item.name}</div>
-                      <div style={{ color: 'var(--primary-gold)', fontSize: '0.85rem' }}>₹{item.price} x {item.qty} = ₹{item.price * item.qty}</div>
+                <>
+                  {orderList.map((item) => (
+                    <div key={item.id} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '12px 0',
+                      borderBottom: '1px solid var(--border-light)'
+                    }}>
+                      <div style={{ flexGrow: 1 }}>
+                        <div style={{ color: '#fff', fontWeight: 600, fontSize: '0.95rem' }}>{item.name}</div>
+                        <div style={{ color: 'var(--primary-gold)', fontSize: '0.85rem' }}>₹{item.price} x {item.qty} = ₹{item.price * item.qty}</div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <button onClick={() => updateQty(item.id, -1)} style={{ width: '28px', height: '28px', background: 'rgba(255,255,255,0.1)', color: '#fff', borderRadius: '4px' }}>-</button>
+                        <span style={{ color: '#fff', fontWeight: 700 }}>{item.qty}</span>
+                        <button onClick={() => updateQty(item.id, 1)} style={{ width: '28px', height: '28px', background: 'rgba(255,255,255,0.1)', color: '#fff', borderRadius: '4px' }}>+</button>
+                      </div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <button onClick={() => updateQty(item.id, -1)} style={{ width: '28px', height: '28px', background: 'rgba(255,255,255,0.1)', color: '#fff', borderRadius: '4px' }}>-</button>
-                      <span style={{ color: '#fff', fontWeight: 700 }}>{item.qty}</span>
-                      <button onClick={() => updateQty(item.id, 1)} style={{ width: '28px', height: '28px', background: 'rgba(255,255,255,0.1)', color: '#fff', borderRadius: '4px' }}>+</button>
-                    </div>
+                  ))}
+
+                  {/* Customer Order Notes Input Field */}
+                  <div style={{ marginTop: '1.25rem' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary-gold)', fontSize: '0.88rem', fontWeight: 600, marginBottom: '6px' }}>
+                      <Edit3 size={15} /> Add Message / Special Instructions:
+                    </label>
+                    <textarea
+                      rows={3}
+                      className="form-control"
+                      placeholder="e.g. Extra spicy, less oil, delivery address, no onions..."
+                      value={orderNotes}
+                      onChange={(e) => setOrderNotes(e.target.value)}
+                      style={{ fontSize: '0.85rem' }}
+                    />
                   </div>
-                ))
+                </>
               )}
             </div>
 
@@ -374,15 +395,15 @@ export default function MenuPage() {
                     className="btn-primary"
                     style={{ width: '100%', justifyContent: 'center', background: '#25D366', color: '#fff' }}
                   >
-                    <MessageSquare size={18} /> Send Order Via WhatsApp (7780938743)
+                    <MessageSquare size={18} /> Send Order via WhatsApp
                   </button>
 
                   <a
                     href={`tel:${RESTAURANT_INFO.phone}`}
                     className="btn-secondary"
-                    style={{ width: '100%', justifyContent: 'center', fontSize: '0.85rem' }}
+                    style={{ width: '100%', justifyContent: 'center', fontSize: '0.88rem' }}
                   >
-                    <Phone size={16} /> Direct Call ({RESTAURANT_INFO.phone})
+                    <Phone size={16} /> Direct Call
                   </a>
                 </div>
               </div>

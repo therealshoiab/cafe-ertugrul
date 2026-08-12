@@ -28,42 +28,42 @@ export default function Footer({ setActivePage }) {
             </p>
             <div style={{ display: 'flex', gap: '12px' }}>
               <a 
-                href={RESTAURANT_INFO.instagramUrl} 
+                href={RESTAURANT_INFO.instagram} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 aria-label="Instagram"
                 style={{
-                  width: '38px',
-                  height: '38px',
+                  width: '40px',
+                  height: '40px',
                   borderRadius: '50%',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid var(--border-gold)',
+                  background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+                  border: 'none',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'var(--primary-gold)'
+                  boxShadow: '0 4px 12px rgba(220, 39, 67, 0.4)'
                 }}
               >
-                <InstagramIcon size={18} />
+                <InstagramIcon size={20} />
               </a>
               <a 
-                href={RESTAURANT_INFO.facebookUrl} 
+                href={RESTAURANT_INFO.facebook} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 aria-label="Facebook"
                 style={{
-                  width: '38px',
-                  height: '38px',
+                  width: '40px',
+                  height: '40px',
                   borderRadius: '50%',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid var(--border-gold)',
+                  background: '#1877F2',
+                  border: 'none',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'var(--primary-gold)'
+                  boxShadow: '0 4px 12px rgba(24, 119, 242, 0.4)'
                 }}
               >
-                <FacebookIcon size={18} />
+                <FacebookIcon size={20} />
               </a>
             </div>
           </div>
