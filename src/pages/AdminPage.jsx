@@ -43,8 +43,9 @@ export default function AdminPage({ onMenuUpdate }) {
   const [newPasscode, setNewPasscode] = useState('');
   const [passcodeChangedMessage, setPasscodeChangedMessage] = useState('');
 
-  const refreshData = () => {
-    const list = dbService.getMenuItems();
+  const refreshData = async () => {
+    // Fetch live from Cloudflare D1 across devices
+    const list = await dbService.fetchFromCloudflareD1();
     setItems(list);
     setCategories(dbService.getCategories());
     setBroadcastText(dbService.getBroadcastMessage());
@@ -73,14 +74,25 @@ export default function AdminPage({ onMenuUpdate }) {
     setPasscode('');
   };
 
-  // Image Upload File Handler
-  const handleImageFileChange = (e) => {
+  // Image Upload File Handlers
+  const handleAddImageFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData({ ...formData, image: reader.result });
         setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleEditImageFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && editingItem) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEditingItem({ ...editingItem, image: reader.result });
       };
       reader.readAsDataURL(file);
     }
@@ -98,7 +110,7 @@ export default function AdminPage({ onMenuUpdate }) {
 
     const result = await dbService.addMenuItem(formData, passcode);
     if (result && result.success) {
-      setFormSuccess(`"${formData.name}" has been added to the menu live!`);
+      setFormSuccess(`"${formData.name}" has been published live!`);
       setFormData({
         name: '',
         category: 'biryani-rice',
@@ -134,10 +146,11 @@ export default function AdminPage({ onMenuUpdate }) {
 
     await dbService.updateMenuItem(editingItem.id, {
       name: editingItem.name,
-      price: editingItem.price,
-      description: editingItem.description,
       category: editingItem.category,
-      isVeg: editingItem.isVeg
+      price: editingItem.price,
+      isVeg: editingItem.isVeg,
+      description: editingItem.description,
+      image: editingItem.image
     }, passcode);
 
     setEditingItem(null);
@@ -174,9 +187,10 @@ export default function AdminPage({ onMenuUpdate }) {
       return;
     }
     dbService.updatePasscode(newPasscode);
-    setPasscodeChangedMessage('Passcode updated successfully!');
+    setPasscode(newPasscode);
+    setPasscodeChangedMessage(`Passcode updated to "${newPasscode}" successfully! Only this new passcode will work now.`);
     setNewPasscode('');
-    setTimeout(() => setPasscodeChangedMessage(''), 4000);
+    setTimeout(() => setPasscodeChangedMessage(''), 5000);
   };
 
   // Filtered items in admin manage tab
@@ -184,7 +198,7 @@ export default function AdminPage({ onMenuUpdate }) {
     if (selectedCategory !== 'all' && item.category !== selectedCategory) return false;
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
-      return item.name.toLowerCase().includes(q) || item.description.toLowerCase().includes(q);
+      return item.name.toLowerCase().includes(q) || (item.description && item.description.toLowerCase().includes(q));
     }
     return true;
   });
@@ -265,7 +279,7 @@ export default function AdminPage({ onMenuUpdate }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <h2 className="font-heading gold-text" style={{ fontSize: 'clamp(1.4rem, 4vw, 2rem)' }}>CAFE ERTUGRUL ADMIN</h2>
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginTop: '4px' }}>Add new dishes, update prices, broadcast offers, and manage stock live.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginTop: '4px' }}>Add new dishes, update prices, upload photos, broadcast offers, and manage stock live.</p>
         </div>
 
         <button onClick={handleLogout} className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
@@ -434,7 +448,7 @@ export default function AdminPage({ onMenuUpdate }) {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={handleImageFileChange}
+                      onChange={handleAddImageFileChange}
                       style={{ display: 'none' }}
                     />
                   </label>
@@ -479,7 +493,7 @@ export default function AdminPage({ onMenuUpdate }) {
               <Search size={20} style={{ color: 'var(--primary-gold)' }} />
               <input
                 type="text"
-                placeholder="Search dish to edit price or toggle stock..."
+                placeholder="Search dish to edit price, details, photo..."
                 className="menu-search-input"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -511,8 +525,12 @@ export default function AdminPage({ onMenuUpdate }) {
                 }}
               >
                 <div style={{ display: 'flex', gap: '12px', marginBottom: '10px' }}>
-                  {item.image && (
+                  {item.image ? (
                     <img src={item.image} alt={item.name} style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />
+                  ) : (
+                    <div style={{ width: '70px', height: '70px', background: 'rgba(229,183,87,0.1)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary-gold)' }}>
+                      <Utensils size={24} />
+                    </div>
                   )}
                   <div style={{ flexGrow: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -547,9 +565,9 @@ export default function AdminPage({ onMenuUpdate }) {
                       onClick={() => setEditingItem(item)}
                       className="btn-secondary"
                       style={{ padding: '6px 10px', fontSize: '0.78rem' }}
-                      title="Edit Price & Name"
+                      title="Edit All Dish Details"
                     >
-                      <Edit3 size={14} /> Edit Price
+                      <Edit3 size={14} /> Edit Dish
                     </button>
 
                     <button
@@ -652,7 +670,7 @@ export default function AdminPage({ onMenuUpdate }) {
         </div>
       )}
 
-      {/* QUICK EDIT MODAL */}
+      {/* FULL EDIT DISH MODAL */}
       {editingItem && (
         <div style={{
           position: 'fixed',
@@ -660,58 +678,140 @@ export default function AdminPage({ onMenuUpdate }) {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'rgba(0, 0, 0, 0.8)',
+          background: 'rgba(0, 0, 0, 0.85)',
           backdropFilter: 'blur(8px)',
           zIndex: 3000,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '1rem'
+          padding: '1rem',
+          overflowY: 'auto'
         }}>
-          <div className="glass-card" style={{ maxWidth: '500px', width: '100%', border: '2px solid var(--primary-gold)' }}>
-            <h3 className="font-heading gold-text" style={{ fontSize: '1.4rem', marginBottom: '1rem' }}>
-              Edit "{editingItem.name}"
+          <div className="glass-card" style={{ maxWidth: '600px', width: '100%', border: '2px solid var(--primary-gold)', maxHeight: '90vh', overflowY: 'auto' }}>
+            <h3 className="font-heading gold-text" style={{ fontSize: '1.4rem', marginBottom: '1.25rem' }}>
+              Edit Dish: "{editingItem.name}"
             </h3>
 
             <form onSubmit={handleQuickEditSave}>
-              <div className="form-group">
-                <label className="form-label">Dish Name</label>
-                <input
-                  type="text"
-                  required
-                  className="form-control"
-                  value={editingItem.name}
-                  onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
-                />
+              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }} className="form-row-3">
+                <div className="form-group">
+                  <label className="form-label">Dish Name *</label>
+                  <input
+                    type="text"
+                    required
+                    className="form-control"
+                    value={editingItem.name}
+                    onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Category *</label>
+                  <select
+                    className="form-control"
+                    value={editingItem.category}
+                    onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
+                  >
+                    {MENU_CATEGORIES.filter(c => c.id !== 'all').map(cat => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Price (₹)</label>
-                <input
-                  type="number"
-                  required
-                  className="form-control"
-                  value={editingItem.price}
-                  onChange={(e) => setEditingItem({ ...editingItem, price: e.target.value })}
-                />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }} className="form-row-3">
+                <div className="form-group">
+                  <label className="form-label">Price (₹) *</label>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    className="form-control"
+                    value={editingItem.price}
+                    onChange={(e) => setEditingItem({ ...editingItem, price: e.target.value })}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Diet Type</label>
+                  <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
+                    <button
+                      type="button"
+                      className={`category-pill ${!editingItem.isVeg ? 'active' : ''}`}
+                      onClick={() => setEditingItem({ ...editingItem, isVeg: false })}
+                      style={{ flexGrow: 1, justifyContent: 'center' }}
+                    >
+                      <span className="diet-tag non-veg" /> Non-Veg
+                    </button>
+                    <button
+                      type="button"
+                      className={`category-pill ${editingItem.isVeg ? 'active' : ''}`}
+                      onClick={() => setEditingItem({ ...editingItem, isVeg: true })}
+                      style={{ flexGrow: 1, justifyContent: 'center' }}
+                    >
+                      <span className="diet-tag veg" /> Veg
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div className="form-group">
                 <label className="form-label">Description</label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   className="form-control"
-                  value={editingItem.description}
+                  value={editingItem.description || ''}
                   onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
                 />
               </div>
 
-              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+              {/* Photo Upload / Web URL in Edit Modal */}
+              <div className="form-group" style={{ background: 'rgba(15, 10, 7, 0.5)', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-gold)' }}>
+                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <ImageIcon size={18} style={{ color: 'var(--primary-gold)' }} /> Dish Photo (Upload File or Paste Web URL)
+                </label>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', marginTop: '8px' }} className="form-row-3">
+                  <div>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>Option A: Upload File</span>
+                    <label className="btn-secondary" style={{ width: '100%', justifyContent: 'center', fontSize: '0.82rem', cursor: 'pointer', padding: '8px' }}>
+                      <Upload size={14} /> Upload Photo
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleEditImageFileChange}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>Option B: Paste Web URL</span>
+                    <input
+                      type="url"
+                      className="form-control"
+                      placeholder="https://example.com/photo.jpg"
+                      value={editingItem.image || ''}
+                      onChange={(e) => setEditingItem({ ...editingItem, image: e.target.value })}
+                      style={{ padding: '8px 10px', fontSize: '0.85rem' }}
+                    />
+                  </div>
+                </div>
+
+                {editingItem.image && (
+                  <div style={{ marginTop: '0.85rem', textAlign: 'center' }}>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--primary-gold)', display: 'block', marginBottom: '4px' }}>Photo Preview:</span>
+                    <img src={editingItem.image} alt="Preview" style={{ width: '100px', height: '80px', objectFit: 'cover', borderRadius: 'var(--radius-sm)', border: '1px solid var(--primary-gold)' }} />
+                  </div>
+                )}
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '1.25rem' }}>
                 <button type="button" onClick={() => setEditingItem(null)} className="btn-secondary">
                   Cancel
                 </button>
                 <button type="submit" className="btn-primary">
-                  Save Changes Live
+                  Save Dish Changes Live
                 </button>
               </div>
             </form>

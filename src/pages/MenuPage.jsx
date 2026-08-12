@@ -7,20 +7,23 @@ import {
 } from 'lucide-react';
 
 export default function MenuPage() {
+  const [menuItems, setMenuItems] = useState(dbService.getMenuItems());
+  const [categories, setCategories] = useState(dbService.getCategories());
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
   const [dietFilter, setDietFilter] = useState('all'); // 'all', 'veg', 'non-veg', 'cart-only'
+  const [searchQuery, setSearchQuery] = useState('');
   const [orderList, setOrderList] = useState([]);
   const [orderNotes, setOrderNotes] = useState('');
   const [showOrderDrawer, setShowOrderDrawer] = useState(false);
 
-  // Dynamic menu state
-  const [menuItems, setMenuItems] = useState([]);
-  const [categories, setCategories] = useState([]);
-
+  // Fetch live menu items across all devices on load
   useEffect(() => {
-    setMenuItems(dbService.getMenuItems());
-    setCategories(dbService.getCategories());
+    const loadLiveMenu = async () => {
+      const liveItems = await dbService.fetchFromCloudflareD1();
+      setMenuItems(liveItems);
+      setCategories(dbService.getCategories());
+    };
+    loadLiveMenu();
   }, []);
 
   // Filter items
@@ -224,8 +227,8 @@ export default function MenuPage() {
               )}
 
               <div className="menu-item-header">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span className={`diet-tag ${item.isVeg ? 'veg' : 'non-veg'}`} title={item.isVeg ? 'Vegetarian' : 'Non-Vegetarian'} />
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', flexGrow: 1 }}>
+                  <span className={`diet-tag ${item.isVeg ? 'veg' : 'non-veg'}`} title={item.isVeg ? 'Vegetarian' : 'Non-Vegetarian'} style={{ marginTop: '3px' }} />
                   <h3 className="menu-item-title">{item.name}</h3>
                 </div>
                 <div className="menu-item-price">

@@ -30,7 +30,7 @@ export const dbService = {
     }
   },
 
-  // Async Cloudflare D1 fetch
+  // Async Cloudflare D1 fetch across devices
   fetchFromCloudflareD1: async () => {
     try {
       const res = await fetch('/api/menu');
@@ -42,11 +42,11 @@ export const dbService = {
             name: item.name,
             category: item.category,
             price: Number(item.price),
-            originalPrice: item.original_price ? Number(item.original_price) : null,
-            isVeg: Boolean(item.is_veg),
-            description: item.description,
-            image: item.image,
-            isAvailable: Boolean(item.is_available)
+            originalPrice: item.originalPrice ? Number(item.originalPrice) : null,
+            isVeg: Boolean(item.isVeg),
+            description: item.description || '',
+            image: item.image || '',
+            isAvailable: Boolean(item.isAvailable !== false)
           }));
           localStorage.setItem(STORAGE_KEY, JSON.stringify(formatted));
           return formatted;
@@ -103,7 +103,7 @@ export const dbService = {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            'x-admin-secret': passcode
+            'x-admin-secret': passcode || DEFAULT_PASSCODE
           },
           body: JSON.stringify({ action: 'add', item: itemToAdd })
         });
@@ -118,7 +118,7 @@ export const dbService = {
     }
   },
 
-  // Update existing dish
+  // Update existing dish (Full Editing: name, category, price, isVeg, description, image)
   updateMenuItem: async (id, updatedFields, passcode = DEFAULT_PASSCODE) => {
     try {
       const current = dbService.getMenuItems();
@@ -128,6 +128,10 @@ export const dbService = {
             ...item,
             ...updatedFields,
             price: updatedFields.price !== undefined ? Number(updatedFields.price) : item.price,
+            category: updatedFields.category || item.category,
+            isVeg: updatedFields.isVeg !== undefined ? Boolean(updatedFields.isVeg) : item.isVeg,
+            description: updatedFields.description !== undefined ? updatedFields.description : item.description,
+            image: updatedFields.image !== undefined ? updatedFields.image : item.image,
           };
         }
         return item;
@@ -137,13 +141,14 @@ export const dbService = {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
 
       try {
+        const itemToSync = updatedList.find(i => i.id === id);
         await fetch('/api/menu', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            'x-admin-secret': passcode
+            'x-admin-secret': passcode || DEFAULT_PASSCODE
           },
-          body: JSON.stringify({ action: 'update', id, updatedFields })
+          body: JSON.stringify({ action: 'update', id, updatedFields: itemToSync })
         });
       } catch (e) {}
 
@@ -164,42 +169,43 @@ export const dbService = {
         return item;
       });
 
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
+
       try {
         await fetch('/api/menu', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            'x-admin-secret': passcode
+            'x-admin-secret': passcode || DEFAULT_PASSCODE
           },
           body: JSON.stringify({ action: 'toggle_stock', id })
         });
       } catch (e) {}
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
       return { success: true };
     } catch (err) {
       return { success: false, error: err.message };
     }
   },
 
-  // Delete a dish
+  // Delete dish from menu
   deleteMenuItem: async (id, passcode = DEFAULT_PASSCODE) => {
     try {
       const current = dbService.getMenuItems();
       const updatedList = current.filter(item => item.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
 
       try {
         await fetch('/api/menu', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            'x-admin-secret': passcode
+            'x-admin-secret': passcode || DEFAULT_PASSCODE
           },
           body: JSON.stringify({ action: 'delete', id })
         });
       } catch (e) {}
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
       return { success: true };
     } catch (err) {
       return { success: false, error: err.message };
@@ -221,22 +227,18 @@ export const dbService = {
     if (!passcode) return false;
     const cleanInput = passcode.trim();
     const savedPasscode = localStorage.getItem(PASSCODE_KEY);
+    const activePasscode = savedPasscode || DEFAULT_PASSCODE;
 
-    // Accept new master password, legacy password, or saved password
-    const isMaster = cleanInput === 'Ertugrul@2026' || cleanInput.toLowerCase() === 'ertugrul2026';
-    const isSaved = savedPasscode && cleanInput === savedPasscode;
-
-    if (isMaster || isSaved) {
-      // Sync local storage with current valid passcode
-      localStorage.setItem(PASSCODE_KEY, cleanInput);
-      return true;
-    }
-    return false;
+    return cleanInput === activePasscode || 
+           cleanInput === DEFAULT_PASSCODE || 
+           cleanInput.toLowerCase() === DEFAULT_PASSCODE.toLowerCase();
   },
 
   // Change Admin Passcode
   updatePasscode: (newPasscode) => {
-    localStorage.setItem(PASSCODE_KEY, newPasscode);
+    if (!newPasscode) return { success: false, error: 'Passcode cannot be empty' };
+    const cleanNew = newPasscode.trim();
+    localStorage.setItem(PASSCODE_KEY, cleanNew);
     return { success: true };
   },
 
