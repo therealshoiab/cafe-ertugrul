@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Utensils, MapPin, Award, Star, Clock, Phone, ArrowRight, 
-  Sparkles, CheckCircle2, ChevronLeft, ChevronRight, HeartHandshake, ShieldCheck
+  Sparkles, CheckCircle2, ChevronLeft, ChevronRight, HeartHandshake, ShieldCheck, MessageSquare
 } from 'lucide-react';
 import { RESTAURANT_INFO } from '../data/menuData';
 
