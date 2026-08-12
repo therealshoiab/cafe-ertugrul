@@ -71,42 +71,44 @@ export default function Footer({ setActivePage }) {
           {/* Quick Navigation Links */}
           <div>
             <h4 style={{ color: '#fff', marginBottom: '1.25rem', fontSize: '1.1rem' }}>Quick Links</h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', color: 'var(--text-muted)' }}>
-              <li><button onClick={() => handleNav('home')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Home & Story</button></li>
-              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Explore Menu</button></li>
-              <li><button onClick={() => handleNav('contact')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Location & Map</button></li>
-              <li><button onClick={() => handleNav('admin')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Owner Admin Portal 🔐</button></li>
-              <li><a href={RESTAURANT_INFO.googleMapsUrl} target="_blank" rel="noreferrer" style={{ color: 'inherit', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>Get Directions <ArrowUpRight size={14} /></a></li>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', color: 'var(--text-muted)', fontSize: '0.92rem' }}>
+              <li><button onClick={() => handleNav('home')} style={{ color: 'inherit', background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}>Home & Story</button></li>
+              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}>Explore Menu</button></li>
+              <li><button onClick={() => handleNav('contact')} style={{ color: 'inherit', background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}>Location & Map</button></li>
+              <li><button onClick={() => handleNav('admin')} style={{ color: 'inherit', background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}>Owner Admin Portal 🔐</button></li>
+              <li><a href={RESTAURANT_INFO.googleMapsUrl} target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', font: 'inherit' }}>Get Directions <ArrowUpRight size={14} /></a></li>
             </ul>
           </div>
 
           {/* Popular Menu */}
           <div>
             <h4 style={{ color: '#fff', marginBottom: '1.25rem', fontSize: '1.1rem' }}>Popular Dishes</h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', color: 'var(--text-muted)' }}>
-              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Kashmiri Mutton Biryani</button></li>
-              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none' }}>House of Tandoor</button></li>
-              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Authentic Mutton Kanti</button></li>
-              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Non-Veg Pizzas</button></li>
-              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none' }}>Saffron Almond Shake</button></li>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', color: 'var(--text-muted)', fontSize: '0.92rem' }}>
+              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}>Kashmiri Mutton Biryani</button></li>
+              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}>House of Tandoor</button></li>
+              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}>Authentic Mutton Kanti</button></li>
+              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}>Non-Veg Pizzas</button></li>
+              <li><button onClick={() => handleNav('menu')} style={{ color: 'inherit', background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}>Saffron Almond Shake</button></li>
             </ul>
           </div>
 
           {/* Hours & Contact */}
           <div>
             <h4 style={{ color: '#fff', marginBottom: '1.25rem', fontSize: '1.1rem' }}>Contact Info</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <MapPin size={16} style={{ color: 'var(--primary-gold)', flexShrink: 0, marginTop: '3px' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', color: 'var(--text-muted)', fontSize: '0.92rem' }}>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <MapPin size={16} style={{ color: 'var(--primary-gold)', flexShrink: 0 }} />
                 <span>{RESTAURANT_INFO.address}</span>
               </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                 <Phone size={16} style={{ color: 'var(--primary-gold)', flexShrink: 0 }} />
-                <a href={`tel:${RESTAURANT_INFO.phone}`} style={{ color: '#fff', fontWeight: 600 }}>{RESTAURANT_INFO.phone}</a>
+                <a href={`tel:${RESTAURANT_INFO.phone}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {RESTAURANT_INFO.phone}
+                </a>
               </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                 <Clock size={16} style={{ color: 'var(--primary-gold)', flexShrink: 0 }} />
-                <span>{RESTAURANT_INFO.hours} (All 7 Days)</span>
+                <span>{RESTAURANT_INFO.hours}</span>
               </div>
             </div>
           </div>

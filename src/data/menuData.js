@@ -910,7 +910,7 @@ export const RESTAURANT_INFO = {
   name: "Cafe Ertugrul",
   tagline: "Authentic Kashmiri Cuisine & Royal Ottoman Hospitality",
   address: "Solina Bazar, Airport Rd, Srinagar, Jammu and Kashmir 190008",
-  phone: "07006609580",
+  phone: "7006609580",
   formattedPhone: "+91 70066 09580",
   googleMapsUrl: "https://www.google.com/maps/dir/34.0566784,74.8034679/Caf%C3%A9+Ertu%C4%9Frul,+Solina+bazar,+Airport+Rd,+Srinagar,+Jammu+and+Kashmir+190008/@34.056706,74.8008476,17z/data=!3m1!4b1!4m10!4m9!1m1!4e1!1m5!1m1!1s0x38e18fe7109e003f:0x71219bfac96fc42b!2m2!1d74.8033622!2d34.0566941!3e0?entry=ttu&g_ep=EgoyMDI2MDgwNS4xIKXMDSoASAFQAw%3D%3D",
   instagram: "https://www.instagram.com/cafe.ertugrul",
