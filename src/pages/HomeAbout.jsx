@@ -1,22 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { 
+  Utensils, MapPin, Award, Star, Clock, Phone, ArrowRight, 
+  Sparkles, CheckCircle2, ChevronLeft, ChevronRight, HeartHandshake, ShieldCheck
+} from 'lucide-react';
 import { RESTAURANT_INFO } from '../data/menuData';
-import { Utensils, Star, Award, ShieldCheck, MapPin, Clock, Phone, ArrowRight, Heart, Coffee, Flame } from 'lucide-react';
+
+const SLIDESHOW_IMAGES = [
+  './images/slideshow/slide1.jpg',
+  './images/slideshow/slide2.jpg',
+  './images/slideshow/slide3.jpg',
+  './images/slideshow/slide4.jpg',
+  './images/slideshow/slide5.jpg'
+];
 
 export default function HomeAbout({ setActivePage }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Auto-play hero background slideshow
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % SLIDESHOW_IMAGES.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextSlide = () => setCurrentSlide((currentSlide + 1) % SLIDESHOW_IMAGES.length);
+  const prevSlide = () => setCurrentSlide((currentSlide - 1 + SLIDESHOW_IMAGES.length) % SLIDESHOW_IMAGES.length);
+
   return (
     <div className="home-about-page">
-      {/* Hero Section */}
+      {/* HERO SECTION WITH BACKGROUND SLIDESHOW */}
       <section className="hero">
-        <div className="hero-content">
+        {/* Slideshow Background Images */}
+        <div className="hero-slideshow-container">
+          {SLIDESHOW_IMAGES.map((imgSrc, index) => (
+            <div
+              key={index}
+              className={`hero-slide ${index === currentSlide ? 'active' : ''}`}
+              style={{ backgroundImage: `url(${imgSrc})` }}
+            />
+          ))}
+          <div className="hero-slide-overlay" />
+        </div>
+
+        {/* Hero Text Content */}
+        <div className="container hero-content">
           <div className="hero-badge">
-            <Award size={16} /> Solina Bazar, Airport Rd, Srinagar
+            <MapPin size={14} /> Solina Bazar, Airport Rd, Srinagar
           </div>
-          <h1 className="hero-title">
-            ROYAL KASHMIRI FLAVORS & <span className="gold-text">OTTOMAN ELEGANCE</span>
+
+          <h1 className="hero-title font-heading gold-text">
+            ROYAL KASHMIRI FLAVORS & OTTOMAN ELEGANCE
           </h1>
+
           <p className="hero-subtitle">
-            Welcome to <strong>Cafe Ertugrul</strong> — Srinagar's premier destination for authentic Kashmiri Wazwan, sizzling Tandoori delicacies, succulent Kanti & Kebabs, artisanal pizzas, and refreshing mocktails.
+            Welcome to Cafe Ertugrul — Srinagar's premier destination for authentic Kashmiri Wazwan, sizzling Tandoori delicacies, succulent Kanti & Kebabs, artisanal pizzas, and refreshing mocktails.
           </p>
+
           <div className="hero-buttons">
             <button onClick={() => setActivePage('menu')} className="btn-primary">
               <Utensils size={18} /> Explore Menu (91 Items)
@@ -25,92 +65,103 @@ export default function HomeAbout({ setActivePage }) {
               <MapPin size={18} /> Find Us / Contact
             </button>
           </div>
+
+          {/* Slideshow Controls & Indicators */}
+          <div className="slideshow-controls">
+            <button onClick={prevSlide} className="slideshow-btn" aria-label="Previous image">
+              <ChevronLeft size={20} />
+            </button>
+            <div className="slideshow-dots">
+              {SLIDESHOW_IMAGES.map((_, i) => (
+                <button
+                  key={i}
+                  className={`dot ${i === currentSlide ? 'active' : ''}`}
+                  onClick={() => setCurrentSlide(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+            <button onClick={nextSlide} className="slideshow-btn" aria-label="Next image">
+              <ChevronRight size={20} />
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* Quick Stats Bar */}
-      <div style={{ background: 'rgba(24, 17, 13, 0.95)', borderBottom: '1px solid var(--border-gold)', padding: '1.5rem 0' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '2rem', textAlign: 'center' }}>
+      {/* QUICK STATS BAR */}
+      <div style={{ background: 'rgba(20, 14, 10, 0.95)', borderBottom: '1px solid var(--border-gold)', padding: '1.25rem 0' }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '1.5rem', textAlign: 'center' }}>
           <div>
-            <div className="font-heading gold-text" style={{ fontSize: '2.2rem', fontWeight: 800 }}>16+</div>
-            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Menu Categories</div>
+            <div className="font-heading gold-text" style={{ fontSize: '1.8rem', fontWeight: 800 }}>16+</div>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>Menu Categories</div>
           </div>
           <div>
-            <div className="font-heading gold-text" style={{ fontSize: '2.2rem', fontWeight: 800 }}>91+</div>
-            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Delectable Items</div>
+            <div className="font-heading gold-text" style={{ fontSize: '1.8rem', fontWeight: 800 }}>91+</div>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>Handcrafted Items</div>
           </div>
           <div>
-            <div className="font-heading gold-text" style={{ fontSize: '2.2rem', fontWeight: 800 }}>4.9★</div>
-            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Customer Rating</div>
+            <div className="font-heading gold-text" style={{ fontSize: '1.8rem', fontWeight: 800 }}>100%</div>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>Authentic Spices</div>
           </div>
           <div>
-            <div className="font-heading gold-text" style={{ fontSize: '2.2rem', fontWeight: 800 }}>30%</div>
-            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Max Combo Savings</div>
+            <div className="font-heading gold-text" style={{ fontSize: '1.8rem', fontWeight: 800 }}>4.9 ★</div>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>Customer Rating</div>
           </div>
         </div>
       </div>
 
-      {/* About Us & Our Story Section */}
+      {/* STORY SECTION (Cleaned Up - Image Next to Story Removed) */}
       <section className="section-padding container">
-        <div className="about-grid">
-          <div>
+        <div className="story-section-card glass-card">
+          <div className="section-header" style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
             <span className="section-tag">Our Heritage & Passion</span>
-            <h2 className="section-title">The Story of <span className="gold-text">Cafe Ertugrul</span></h2>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '1.25rem', fontSize: '1.05rem', lineHeight: '1.8' }}>
-              Nestled along <strong>Airport Road in Solina Bazar, Srinagar</strong>, Cafe Ertugrul was born out of a deep reverence for rich culinary heritage and warm royal hospitality. Inspired by timeless traditions, our kitchen blends ancient Kashmiri spice secrets with modern dining finesse.
-            </p>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '1.75rem', fontSize: '1.05rem', lineHeight: '1.8' }}>
-              From slow-cooked dum biryanis infused with genuine saffron to sizzling mutton kanti, hand-tossed artisanal pizzas, and refreshing handcrafted mocktails — every dish is cooked with love, fresh local ingredients, and uncompromised quality.
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '2rem' }}>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <div className="info-icon" style={{ width: '40px', height: '40px' }}><ShieldCheck size={20} /></div>
-                <div>
-                  <h4 style={{ color: '#fff', fontSize: '0.95rem' }}>100% Fresh Ingredients</h4>
-                  <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Sourced daily from local markets</span>
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <div className="info-icon" style={{ width: '40px', height: '40px' }}><Heart size={20} /></div>
-                <div>
-                  <h4 style={{ color: '#fff', fontSize: '0.95rem' }}>Royal Ambiance</h4>
-                  <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Comfortable seating & decor</span>
-                </div>
-              </div>
-            </div>
-
-            <button onClick={() => setActivePage('menu')} className="btn-primary">
-              Discover Our Menu <ArrowRight size={16} />
-            </button>
+            <h2 className="section-title">THE STORY OF <span className="gold-text">CAFE ERTUGRUL</span></h2>
           </div>
 
-          <div style={{ position: 'relative' }}>
-            <div style={{ position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '2px solid var(--border-gold)', boxShadow: 'var(--shadow-main)' }}>
-              <img src="./images/hero.png" alt="Cafe Ertugrul Dining Experience" style={{ width: '100%', height: '450px', objectFit: 'cover', display: 'block' }} />
-            </div>
-            <div className="hero-float-badge">
-              <div className="logo-badge" style={{ width: '42px', height: '42px', fontSize: '1.1rem' }}>★</div>
-              <div>
-                <div style={{ color: '#fff', fontWeight: 700, fontSize: '0.95rem' }}>Authentic Flavors</div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Solina Bazar, Srinagar</div>
+          <p style={{ color: 'var(--text-main)', fontSize: '1.05rem', lineHeight: '1.8', marginBottom: '1.25rem' }}>
+            Nestled in the bustling heart of Solina Bazar along Airport Road in Srinagar, <strong>Cafe Ertugrul</strong> was born out of a deep reverence for two legendary culinary traditions — the rich, aromatic heritage of Kashmiri Wazwan and the warm, opulent hospitality of Ottoman dining culture.
+          </p>
+
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem', lineHeight: '1.8', marginBottom: '1.75rem' }}>
+            Every dish served at Cafe Ertugrul tells a story of craftsmanship. From slow-simmered Kashmiri Mutton Biryani infused with pure saffron to hand-skewered Mutton Kanti cooked over hot coals, we select only the finest local ingredients and authentic Kashmiri spices to ensure an unforgettable dining experience.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginTop: '2rem' }}>
+            <div style={{ background: 'rgba(15, 10, 7, 0.6)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-sm)', padding: '1.25rem' }}>
+              <div style={{ color: 'var(--primary-gold)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <ShieldCheck size={20} /> Authentic Ingredients
               </div>
+              <div style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>Pure saffron, hand-ground Kashmiri chilies, and fresh local produce every morning.</div>
+            </div>
+
+            <div style={{ background: 'rgba(15, 10, 7, 0.6)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-sm)', padding: '1.25rem' }}>
+              <div style={{ color: 'var(--primary-gold)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <HeartHandshake size={20} /> Royal Ambiance
+              </div>
+              <div style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>Warm wooden interiors, traditional seating, and polite hospitality for families & guests.</div>
+            </div>
+
+            <div style={{ background: 'rgba(15, 10, 7, 0.6)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-sm)', padding: '1.25rem' }}>
+              <div style={{ color: 'var(--primary-gold)', fontWeight: 700, fontSize: '1.1rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Award size={20} /> Master Chefs
+              </div>
+              <div style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>Experienced Kashmiri chefs specializing in Tandoor, Wazwan, Kebabs, and fusion rolls.</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Signature Dishes Showcase */}
+      {/* SIGNATURE DISHES SHOWCASE */}
       <section className="section-padding" style={{ background: 'rgba(20, 14, 10, 0.6)', borderTop: '1px solid var(--border-gold)', borderBottom: '1px solid var(--border-gold)' }}>
         <div className="container">
           <div className="section-header">
             <span className="section-tag">Chef's Recommendations</span>
-            <h2 className="section-title">Signature <span className="gold-text">Specialties</span></h2>
-            <p className="section-desc">Sample a few of our most loved Kashmiri and global culinary masterpieces.</p>
+            <h2 className="section-title">SIGNATURE <span className="gold-text">DELICACIES</span></h2>
+            <p className="section-desc">Handpicked customer favorites prepared fresh daily at Cafe Ertugrul.</p>
           </div>
 
-          <div className="features-grid">
-            <div className="glass-card menu-card" style={{ padding: '1.25rem' }}>
+          <div className="menu-grid">
+            <div className="glass-card menu-card">
               <img src="./images/biryani.png" alt="Special Kashmiri Biryani" className="menu-card-image" />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="diet-tag non-veg" />
@@ -123,7 +174,7 @@ export default function HomeAbout({ setActivePage }) {
               </button>
             </div>
 
-            <div className="glass-card menu-card" style={{ padding: '1.25rem' }}>
+            <div className="glass-card menu-card">
               <img src="./images/kebabs.png" alt="Authentic Mutton Kanti" className="menu-card-image" />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="diet-tag non-veg" />
@@ -136,14 +187,14 @@ export default function HomeAbout({ setActivePage }) {
               </button>
             </div>
 
-            <div className="glass-card menu-card" style={{ padding: '1.25rem' }}>
+            <div className="glass-card menu-card">
               <img src="./images/drinks.png" alt="Kashmiri Saffron Almond Shake" className="menu-card-image" />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="diet-tag veg" />
                 <span style={{ color: 'var(--primary-gold)', fontWeight: 700 }}>₹220</span>
               </div>
-              <h3 className="menu-item-title" style={{ marginBottom: '8px' }}>Saffron Almond Royal Shake</h3>
-              <p className="menu-item-desc">Pure saffron infused cold milk blended with soaked almonds, pistachio & ice cream.</p>
+              <h3 className="menu-item-title" style={{ marginBottom: '8px' }}>Kashmiri Saffron Almond Shake</h3>
+              <p className="menu-item-desc">Pure saffron cold milk blended with soaked almonds, pistachio & ice cream.</p>
               <button onClick={() => setActivePage('menu')} className="btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>
                 Order In Menu
               </button>
@@ -152,98 +203,22 @@ export default function HomeAbout({ setActivePage }) {
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="section-padding container">
-        <div className="section-header">
-          <span className="section-tag">Experience The Difference</span>
-          <h2 className="section-title">Why Guests Love <span className="gold-text">Cafe Ertugrul</span></h2>
-        </div>
-
-        <div className="features-grid">
-          <div className="glass-card feature-card">
-            <div className="feature-icon"><Flame size={32} /></div>
-            <h3 className="feature-title">Authentic Tandoor</h3>
-            <p className="feature-text">Traditional charcoal tandoor grilling yields irresistible smokiness for our kebabs and naans.</p>
-          </div>
-
-          <div className="glass-card feature-card">
-            <div className="feature-icon"><Utensils size={32} /></div>
-            <h3 className="feature-title">16 Menu Categories</h3>
-            <p className="feature-text">From traditional Wazwan and Biryanis to Momos, Pizzas, Kathi Rolls, and Shakes.</p>
-          </div>
-
-          <div className="glass-card feature-card">
-            <div className="feature-icon"><Coffee size={32} /></div>
-            <h3 className="feature-title">Handcrafted Beverages</h3>
-            <p className="feature-text">Signature mocktails, saffron coolers, and thick creamy milkshakes for every mood.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="section-padding" style={{ background: 'rgba(24, 17, 13, 0.8)', borderTop: '1px solid var(--border-gold)' }}>
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">Customer Reviews</span>
-            <h2 className="section-title">Loved By <span className="gold-text">Srinagar Locals & Visitors</span></h2>
-          </div>
-
-          <div className="features-grid">
-            <div className="glass-card" style={{ padding: '2rem' }}>
-              <div style={{ display: 'flex', color: '#ffd700', gap: '4px', marginBottom: '1rem' }}>
-                {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="#ffd700" />)}
-              </div>
-              <p style={{ color: 'var(--text-main)', fontStyle: 'italic', marginBottom: '1.25rem' }}>
-                "The Kashmiri Mutton Kanti and Biryani at Cafe Ertugrul are hands down the best on Airport Road! Beautiful ambience and super friendly staff."
-              </p>
-              <div style={{ color: 'var(--primary-gold)', fontWeight: 700 }}>- Tariq Ahmad, Srinagar</div>
-            </div>
-
-            <div className="glass-card" style={{ padding: '2rem' }}>
-              <div style={{ display: 'flex', color: '#ffd700', gap: '4px', marginBottom: '1rem' }}>
-                {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="#ffd700" />)}
-              </div>
-              <p style={{ color: 'var(--text-main)', fontStyle: 'italic', marginBottom: '1.25rem' }}>
-                "Their Non-Veg Pizza and Saffron Almond Shake are extraordinary! Plus the Combo offers save you real money. Highly recommended!"
-              </p>
-              <div style={{ color: 'var(--primary-gold)', fontWeight: 700 }}>- Mehreen K., Solina</div>
-            </div>
-
-            <div className="glass-card" style={{ padding: '2rem' }}>
-              <div style={{ display: 'flex', color: '#ffd700', gap: '4px', marginBottom: '1rem' }}>
-                {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="#ffd700" />)}
-              </div>
-              <p style={{ color: 'var(--text-main)', fontStyle: 'italic', marginBottom: '1.25rem' }}>
-                "Great spot for family dinners. Kurkure momos, Butter chicken, and Garlic Naan were cooked to absolute perfection."
-              </p>
-              <div style={{ color: 'var(--primary-gold)', fontWeight: 700 }}>- Aadil Shah, Tourist</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call To Action Banner */}
-      <section className="container" style={{ padding: '4rem 1.5rem' }}>
-        <div className="glass-card" style={{
-          background: 'linear-gradient(135deg, rgba(36, 25, 19, 0.95), rgba(15, 10, 7, 0.98))',
-          border: '2px solid var(--primary-gold)',
-          padding: '3.5rem 2rem',
-          textAlign: 'center',
-          borderRadius: 'var(--radius-lg)'
-        }}>
-          <h2 className="font-heading gold-text" style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>
-            READY TO TASTE THE ROYAL FLAVORS?
+      {/* CALL TO ACTION BANNER */}
+      <section className="section-padding container text-center">
+        <div className="glass-card" style={{ padding: '3rem 1.5rem', background: 'var(--gold-gradient)', color: '#0f0a07' }}>
+          <h2 className="font-heading" style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, marginBottom: '1rem', color: '#0f0a07' }}>
+            READY TO EXPERIENCE CAFE ERTUGRUL?
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '2rem', maxWidth: '650px', margin: '0 auto 2rem' }}>
-            Visit us today at Solina Bazar, Airport Rd, Srinagar or place a direct takeaway phone order.
+          <p style={{ fontSize: '1.05rem', maxWidth: '640px', margin: '0 auto 2rem', opacity: 0.95, fontWeight: 500 }}>
+            Visit us at Solina Bazar, Airport Rd, Srinagar or order takeaway directly via WhatsApp!
           </p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-            <a href={`tel:${RESTAURANT_INFO.phone}`} className="btn-primary">
-              <Phone size={18} /> Call {RESTAURANT_INFO.phone}
-            </a>
-            <button onClick={() => setActivePage('menu')} className="btn-secondary">
-              <Utensils size={18} /> View All 91 Menu Items
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button onClick={() => setActivePage('menu')} className="btn-primary" style={{ background: '#0f0a07', color: 'var(--primary-gold)' }}>
+              <Utensils size={18} /> View Menu (91 Items)
             </button>
+            <a href="https://wa.me/917780938743" target="_blank" rel="noreferrer" className="btn-secondary" style={{ borderColor: '#0f0a07', color: '#0f0a07', fontWeight: 700 }}>
+              Order via WhatsApp
+            </a>
           </div>
         </div>
       </section>

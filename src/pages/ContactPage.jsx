@@ -17,6 +17,20 @@ export default function ContactPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
+
+    // Format WhatsApp Reservation Message
+    const message = `*TABLE RESERVATION REQUEST - CAFE ERTUGRUL*\n` +
+      `📍 *Location:* Solina Bazar, Airport Rd, Srinagar\n\n` +
+      `👤 *Customer Name:* ${formData.name}\n` +
+      `📞 *Phone Number:* ${formData.phone}\n` +
+      `👥 *Number of Guests:* ${formData.guests}\n` +
+      `📅 *Date:* ${formData.date}\n` +
+      `⏰ *Time:* ${formData.time}\n` +
+      `📝 *Notes:* ${formData.notes || 'None'}\n\n` +
+      `Please confirm table availability for us. Thank you!`;
+
+    const encodedText = encodeURIComponent(message);
+    window.open(`https://wa.me/917780938743?text=${encodedText}`, '_blank');
   };
 
   return (

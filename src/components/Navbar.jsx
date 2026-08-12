@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { RESTAURANT_INFO } from '../data/menuData';
-import { Phone, Menu, X, Utensils, MapPin, Smartphone, Tablet, Monitor } from 'lucide-react';
+import { Phone, Menu, X, Utensils, MapPin, Smartphone, Tablet, Monitor, MessageSquare } from 'lucide-react';
 
 export default function Navbar({ activePage, setActivePage }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -53,7 +53,7 @@ export default function Navbar({ activePage, setActivePage }) {
               onClick={() => handleNavClick('home')} 
               className={`nav-link ${activePage === 'home' ? 'active' : ''}`}
             >
-              Home & About
+              Home & Story
             </button>
           </li>
           <li>
@@ -61,7 +61,7 @@ export default function Navbar({ activePage, setActivePage }) {
               onClick={() => handleNavClick('menu')} 
               className={`nav-link ${activePage === 'menu' ? 'active' : ''}`}
             >
-              Full Menu
+              Explore Menu
             </button>
           </li>
           <li>
@@ -83,53 +83,63 @@ export default function Navbar({ activePage, setActivePage }) {
           </li>
         </ul>
 
-        {/* Action Button */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <a href={`tel:${RESTAURANT_INFO.phone}`} className="btn-primary" style={{ padding: '10px 18px', fontSize: '0.85rem' }}>
-            <Phone size={15} /> <span className="hide-on-mobile">Call</span> {RESTAURANT_INFO.phone}
+        {/* Action Button: Desktop Call & Mobile Hamburger Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <a href={`tel:${RESTAURANT_INFO.phone}`} className="btn-primary desktop-call-btn" style={{ padding: '10px 18px', fontSize: '0.85rem' }}>
+            <Phone size={15} /> Call {RESTAURANT_INFO.phone}
           </a>
 
           <button 
             className="mobile-toggle" 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label="Toggle navigation menu"
+            style={{ padding: '10px 12px', border: '1px solid var(--primary-gold)', color: 'var(--primary-gold)' }}
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer (3-Line Menu Pages) */}
       {mobileMenuOpen && (
         <div className="mobile-drawer">
           <button 
             onClick={() => handleNavClick('home')} 
             className={`nav-link ${activePage === 'home' ? 'active' : ''}`}
-            style={{ textAlign: 'left', fontSize: '1.15rem' }}
+            style={{ textAlign: 'left', fontSize: '1.15rem', padding: '10px 0' }}
           >
-            Home & Story
+            🏠 Home & Story
           </button>
           <button 
             onClick={() => handleNavClick('menu')} 
             className={`nav-link ${activePage === 'menu' ? 'active' : ''}`}
-            style={{ textAlign: 'left', fontSize: '1.15rem' }}
+            style={{ textAlign: 'left', fontSize: '1.15rem', padding: '10px 0' }}
           >
-            Explore Menu
+            📜 Explore Full Menu (91 Items)
           </button>
           <button 
             onClick={() => handleNavClick('contact')} 
             className={`nav-link ${activePage === 'contact' ? 'active' : ''}`}
-            style={{ textAlign: 'left', fontSize: '1.15rem' }}
+            style={{ textAlign: 'left', fontSize: '1.15rem', padding: '10px 0' }}
           >
-            Contact & Map Location
+            📍 Contact & Map Location
           </button>
           <button 
             onClick={() => handleNavClick('admin')} 
             className={`nav-link ${activePage === 'admin' ? 'active' : ''}`}
-            style={{ textAlign: 'left', fontSize: '1.15rem', color: 'var(--primary-gold)' }}
+            style={{ textAlign: 'left', fontSize: '1.15rem', padding: '10px 0', color: 'var(--primary-gold)' }}
           >
-            Owner Admin Portal 🔐
+            🔐 Owner Admin Portal
           </button>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-light)' }}>
+            <a href="https://wa.me/917780938743" target="_blank" rel="noreferrer" className="btn-primary" style={{ justifyContent: 'center', background: '#25D366', color: '#fff', fontSize: '0.85rem' }}>
+              <MessageSquare size={16} /> WhatsApp
+            </a>
+            <a href={`tel:${RESTAURANT_INFO.phone}`} className="btn-secondary" style={{ justifyContent: 'center', fontSize: '0.85rem' }}>
+              <Phone size={16} /> Call Now
+            </a>
+          </div>
         </div>
       )}
     </nav>
